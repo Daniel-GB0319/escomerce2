@@ -92,8 +92,9 @@ taskForm.addEventListener('submit', async (e) => {
     //const cvc_metodoPago = taskForm['cvc-1'].value;
     const month_metodoPago = taskForm['card_month_mpago'].value;
     const year_metodoPago = taskForm['card_year_mpago'].value;
-    await saveMetodoPagos(titular_metodoPago, month_metodoPago, year_metodoPago);
 
+    
+    await saveMetodoPagos(titular_metodoPago, month_metodoPago, year_metodoPago);
     if (!editStatus) {
         
     } else {
