@@ -34,50 +34,17 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         //Imprimimos los datos guardados en FireBase en la consola
         querySnapshot.forEach(doc => {
 
-            const clientesDato = doc.data()
-            clientesDato.id = doc.id;
+            const integranteDato = doc.data()
+            integranteDato.id = doc.id;
 
             //Genera un html
-            taskContainer.innerHTML += '<div class="mb-3">
-            <label class="form-label" for="name">Nombre</label><input class="form-control item" type="text" id="nombre_usa12" placeholder="Nombre(s)" required="true"></div>
-        <div class="mb-3">
-            <label class="form-label" for="password">Apellidos</label>
-            <input class="form-control" id="a_paterno12" type="text" placeholder="A. Paterno" required="true">
-            <input class="form-control" id="a_materno12" type="text" placeholder="A. Materno" required="true" style="margin-top: 10px;"></div>
-        <div class="mb-3" id="no_boleta_empleado12">
-            <label class="form-label" for="email">Boleta</label><input class="form-control" type="number" placeholder="No. Boleta o de empleado" min="2" max="19999999999999"></div>
-        <div class="mb-3" id="correo_cuenta12">
-            <label class="form-label" for="email">Correo</label><input class="form-control" type="email" placeholder="Correo institucional" required="true"></div>
-        <div class="mb-3" id="contraseña_cuenta12">
-            <label class="form-label" for="email">Contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
-        <div class="mb-3" id="contraseña_cuenta42">
-            <label class="form-label" for="email">Repite la contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
-        <div class="mb-3" id="escuela_procedencia12">
-            <label class="form-label" for="email">Escuela</label>
-            <select class="form-select" required="true">
-                <option value="12" selected="">Escuela de procedencia</option>
-                <option value="13">ESCOM</option>
-                <option value="14">ESIME Z</option>
-            </select></div>
-        <div class="mb-3">
-            <label class="form-label" for="email">Teléfono</label>
-            <input class="form-control" id="telefono_10dig12" type="tel" placeholder="10 dígitos (opcional)"></div>
-        <div class="mb-3">
-            <div class="form-check">
-                <input class="form-check-input" id="vendedor12" type="checkbox">
-                <label class="form-check-label" for="formCheck-1">Quiero ser vendedor</label>
-            </div>
-        </div>
-        <div class="d-block mb-3">
-            <label class="form-label" for="email">INE</label>
-            <input class="form-control" id="ine12" type="file">
-        </div>
-        <div class="d-block mb-3">
-            <label class="form-label" for="email">Cuenta CLABE</label>
-            <input class="form-control" id="cuenta_clabe12" type="text" placeholder="No. cuenta CLABE">
-        </div>
-        <button class="btn btn-primary" id="actualizar_datos" type="submit" style="background: rgb(52, 73, 94);border-color: rgb(52, 73, 94);border-top-color: rgb(52,border-right-color 73,border-bottom-color 94);border-left-color: 73,;"
-        onclick="inicio()">Actualizar datos</button>>'
+            taskContainer.innerHTML += '<div class="tarjeta_Integrante"><div class="img_Integrante"><img src="' + integranteDato.url_foto +
+                '" alt="' + integranteDato.url_foto +
+                '"></div><h3>' + integranteDato.nombre_integrante +
+                '</h3><div class="desc_Integrante"><h4>' + integranteDato.escuela_integrante +
+                '</h4><p>' + integranteDato.desc_integrante +
+                '</p><a href="#"><p>' + integranteDato.social_integrante +
+                '</p></a></div> <div class="botones_carta"><button class="btn btn-primary btn-delete" data-id="' + integranteDato.id + '">Eliminar</button><button class="btn btn-secundary btn-edit" data-id="' + integranteDato.id + '">Editar</button></div></div>';
 
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
