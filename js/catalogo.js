@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             //console.log(infoDato);
             //Genera un html
             taskContainer.innerHTML += '<div class="col-12 col-md-6 col-lg-4"><div class="clean-product-item"><div class="product-name"><a href="#">' + infoDato.nombre_prod + '</a></div>' +
-                '<div class="image"><a><img class="img-fluid d-block mx-auto" src="assets/img/subirImagen.png"></a></div>' +
+                '<div class="image"><a><img class="img-fluid d-block mx-auto" src="'+infoDato.url_prod+'"></a></div>' +
                 '<div class="product-name"><a>' + infoDato.desc_prod + ' ID:' + infoDato.id + '</a></div><div class="product-name"></div><div class="about"><div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>' +
                 '<div class="price"><h3>$' + infoDato.prec_prod + '</h3></div>' +
                 '</div><div class="d-flex justify-content-around product-name" style="margin-top: 30px;">' +

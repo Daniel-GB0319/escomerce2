@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             taskContainer.innerHTML += '<div class="product">' +
                 '<div class="row justify-content-center align-items-center">' +
                 '<div class="col-md-3">' +
-                '<div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/subirImagen.png"></div>' +
+                '<div class="product-image"><img class="img-fluid d-block mx-auto image" src="'+infoDato.url_prod+'"></div>' +
                 '</div>' +
                 '<div class="col-md-5 product-info"><a class="product-name" href="#" style="color: rgb(13,136,208);">' + infoDato.nombre_prod + '</a>' +
                 '<div class="product-specs">' +
