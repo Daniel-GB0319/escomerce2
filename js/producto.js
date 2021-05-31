@@ -3,11 +3,11 @@ var db = firebase.firestore();
 var produ = document.getElementById('infop');
 
 
-db.collection("producto").where("nombre_prod", "==", "Multimetro Digital",true).get().then((querySnapshot) => {
+db.collection("producto").where("nombre_prod", "==", "Multimetro Digital", true).get().then((querySnapshot) => {
     produ.innerHTML = '';
     querySnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
-    produ.innerHTML += `
+        console.log(`${doc.id} => ${doc.data()}`);
+        produ.innerHTML += `
        <div class="d-flex block-heading" style="width: 100vw;"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Regresar</button></div>
        <div class="block-content" >
            <div class="product-info">
@@ -96,11 +96,10 @@ db.collection("producto").where("nombre_prod", "==", "Multimetro Digital",true).
           `
     });
 });
-    
-    
-    
-   
-    
-    
-    
-    
+
+
+
+
+
+
+

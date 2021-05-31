@@ -1,11 +1,15 @@
 const db = firebase.firestore();
 
-const taskForm = document.getElementById('imp-catalogo');
+const taskForm = document.getElementById('pagar_div');
 const taskContainer = document.getElementById('impr-carrito');
+const getPago = document.getElementById('impr-carrito');
+const printPago = document.getElementById('pagar_div');
+
 
 let carritoOn = false;
 let editStatus = false;
 let id = '';
+const sumaPago = 0;
 
 //Funcion para guardar la informacion en la base de datos
 const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) =>
@@ -67,15 +71,10 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             '<div class="col-6 col-md-2 price"><span>x$' + infoDato.prec_prod + '</span></div><div class="d-flex justify-content-around product-name " style="margin-top: 30px; "><button class="btn btn-primary btn-delete" data-id="'+infoDato.id+'" type="button " style="background: rgb(13,136,208); ">Eliminar</button>' +
             '</div>' +
             '</div>';
-            
-
-
-
-
-
-
-
-
+            let precio = infoDato.prec_prod;
+            var precioTotal = 0;
+            precioTotal = precio + precioTotal;
+            console.log(precioTotal)
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
             btnDelete.forEach(btn => {
@@ -100,29 +99,6 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
                 })
             })
-
-            const btnEdit = document.querySelectorAll('.btn-edit');
-            btnEdit.forEach(btn => {
-
-                btn.addEventListener('click', async (e) => {
-                    const doc = await getIntegrante(e.target.dataset.id);
-                    const datoActualizar = doc.data();
-
-                    editStatus = true;
-                    //Obtenemos el id del producto
-                    id = doc.id;
-                    taskForm['nombre_producto'].value = datoActualizar.nombre_prod;
-                    taskForm['desc_producto'].value = datoActualizar.desc_prod;
-                    taskForm['cantidad_producto'].value = datoActualizar.cant_prod;
-                    taskForm['precio_producto'].value = datoActualizar.prec_prod;
-                    taskForm['condicion_producto'].value = datoActualizar.cond_prod;
-                    taskForm['foto_producto'].value = datoActualizar.url_prod;
-                    taskForm['calif_producto'].value = datoActualizar.calif_prod
-                    taskForm['categoria_producto'].value = datoActualizar.cat_prod;
-                    //Boton de actualizar info (No Tocar)
-                    taskForm['subir_registro'].innerText = 'Update';
-                })
-            })
             //console.log(infoDato.id)
         })
 
@@ -131,3 +107,14 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 });
 
 //Estructura de la informacion que se guardará a la base de datos
+window.addEventListener('DOMContentLoaded', async (e) => { 
+    
+    const pago = sumaPago;
+    const x = 5;
+    const y = 20;
+    function suma(x,y){
+        const c =x+y;
+        console.log(c)
+    }
+    
+})
