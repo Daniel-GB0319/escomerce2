@@ -1,7 +1,7 @@
 const db = firebase.firestore();
 
 const taskForm = document.getElementById('imp-catalogo');
-const taskContainer = document.getElementById('imp-catalogo');
+const taskContainer = document.getElementById('impr-carrito');
 
 let carritoOn = false;
 let editStatus = false;
@@ -25,7 +25,7 @@ const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod
 //Funcion para imprimir la informacion
 const getIntegrantes = () => db.collection('producto').get();
 const getIntegrante = (id) => db.collection('producto').doc(id).get();
-const addCarrito = (idProducto) => db.collection('carrito').doc().set({idProducto});
+const addCarrito = (idProducto) => db.collection('carrito').doc().set({ idProducto });
 const onGetIntegrantes = (callback) => db.collection('producto').onSnapshot(callback);
 const deleteIntegrante = (id) => db.collection('producto').doc(id).delete();
 const editIntegrante = (id) => db.collection('producto').doc(id).get();
@@ -44,12 +44,23 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             infoDato.id = doc.id;
             //console.log(infoDato);
             //Genera un html
-            taskContainer.innerHTML += '<div class="col-12 col-md-6 col-lg-4"><div class="clean-product-item"><div class="product-name"><a href="#">' + infoDato.nombre_prod + '</a></div>' +
-                '<div class="image"><a><img class="img-fluid d-block mx-auto" src="assets/img/subirImagen.png"></a></div>' +
-                '<div class="product-name"><a>' + infoDato.desc_prod + ' ID:' + infoDato.id + '</a></div><div class="product-name"></div><div class="about"><div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>' +
-                '<div class="price"><h3>$' + infoDato.prec_prod + '</h3></div>' +
-                '</div><div class="d-flex justify-content-around product-name" style="margin-top: 30px;">' +
-                '<button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Ver</button><button data-id="'+infoDato.id+'"class="btn btn-primary btn-add" type="button" style="background: rgb(13,136,208);">Comprar</button></div></div></div>';
+            taskContainer.innerHTML += '<div class="product">' +
+                '<div class="row justify-content-center align-items-center">' +
+                '<div class="col-md-3">' +
+                '<div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/subirImagen.png"></div>' +
+                '</div>' +
+                '<div class="col-md-5 product-info"><a class="product-name" href="#" style="color: rgb(13,136,208);">' + infoDato.nombre_prod + '</a>' +
+                '<div class="product-specs">' +
+                '<div><span>Detalles:&nbsp;</span><span class="value">' + infoDato.desc_prod + '</span></div>' +
+                '<div></div>' +
+                '<div></div>' +
+                '<div></div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Cantidad</label><input type="number" id="number" class="form-control quantity-input" value="1"></div>' +
+                '<div class="col-6 col-md-2 price"><span>x$' + infoDato.prec_prod + '</span></div>' +
+                '</div>' +
+                '</div>';
 
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
@@ -61,9 +72,9 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             })
 
             const btnAdd = document.querySelectorAll('.btn-add');
-            
-            btnAdd.forEach( btn => {
-                
+
+            btnAdd.forEach(btn => {
+
                 btn.addEventListener('click', async (e) => {
                     const doc = await getIntegrante(e.target.dataset.id);
                     const datoActualizar = doc.data();
@@ -71,8 +82,8 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     const idProducto = e.target.dataset.id
                     await addCarrito(idProducto);
 
-                    
-                    
+
+
                 })
             })
 
@@ -106,41 +117,3 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 });
 
 //Estructura de la informacion que se guardará a la base de datos
-taskForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    // Nombre de variable = nombre de la variable que guarda el id del div a editar['Nombre del id especifico a editar'].value;
-
-    const nombre_prod = taskForm['nombre_producto'].value;
-    const desc_prod = taskForm['desc_producto'].value;
-    const cant_prod = Number(taskForm['cantidad_producto'].value);
-    const prec_prod = Number(taskForm['precio_producto'].value);
-    const cond_prod = taskForm['condicion_producto'].value;
-    const url_prod = taskForm['foto_producto'].value;
-    const calif_prod = Number(taskForm['calif_producto'].value);
-    const cat_prod = taskForm['categoria_producto'].value;
-
-    if (!editStatus) {
-        await saveIntegrantes(nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod);
-    } else {
-
-        await updateIntegrante(id, {
-            nombre_prod,
-            desc_prod,
-            cant_prod,
-            prec_prod,
-            cond_prod,
-            url_prod,
-            calif_prod,
-            cat_prod
-        });
-        editStatus = false;
-
-        //Boton de Guardar info (No tocar)
-        taskForm['subir_registro'].innerText = 'Guardar';
-
-    }
-    console.log(id)
-    getIntegrantes();
-    taskForm.reset();
-    //console.log(url_foto, nombre_integrante);
-})

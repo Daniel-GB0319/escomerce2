@@ -1,29 +1,33 @@
 const db = firebase.firestore();
 
-const taskForm = document.getElementById('form_datos_int');
+const taskForm = document.getElementById('form_datos_prod');
 const taskContainer = document.getElementById('printIntegrantes');
 
 let editStatus = false;
 let id = '';
 
 //Funcion para guardar la informacion en la base de datos
-const saveIntegrantes = (url_foto, nombre_integrante, escuela_integrante, desc_integrante, social_integrante) =>
+const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) =>
     //Creará la coleccion de la base de datos en Firebase
     //aquí se pondrá el nombre de cada entidad(si no existe, Firebase la creará en automático)
-    db.collection('integrantes').doc().set({
-        url_foto,
-        nombre_integrante,
-        escuela_integrante,
-        desc_integrante,
-        social_integrante
-    })
+    db.collection('producto').doc().set({
+        nombre_prod,
+        desc_prod,
+        cant_prod,
+        prec_prod,
+        cond_prod,
+        url_prod,
+        calif_prod,
+        cat_prod
+    }) 
+    
 //Funcion para imprimir la informacion
-const getIntegrantes = () => db.collection('integrantes').get();
-const getIntegrante = (id) => db.collection('integrantes').doc(id).get();
-const onGetIntegrantes = (callback) => db.collection('integrantes').onSnapshot(callback);
-const deleteIntegrante = (id) => db.collection('integrantes').doc(id).delete();
-const editIntegrante = (id) => db.collection('integrantes').doc(id).get();
-const updateIntegrante = (id, updatedIntegrante) => db.collection('integrantes').doc(id).update(updatedIntegrante);
+const getIntegrantes = () => db.collection('producto').get();
+const getIntegrante = (id) => db.collection('producto').doc(id).get();
+const onGetIntegrantes = (callback) => db.collection('producto').onSnapshot(callback);
+const deleteIntegrante = (id) => db.collection('producto').doc(id).delete();
+const editIntegrante = (id) => db.collection('producto').doc(id).get();
+const updateIntegrante = (id, updatedIntegrante) => db.collection('producto').doc(id).update(updatedIntegrante);
 
 //Imprimir
 window.addEventListener('DOMContentLoaded', async (e) => {
@@ -33,11 +37,11 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         taskContainer.innerHTML = '';
         //Imprimimos los datos guardados en FireBase en la consola
         querySnapshot.forEach(doc => {
-
-            const integranteDato = doc.data()
-            integranteDato.id = doc.id;
-
-            //Genera un html
+            
+            const infoDato = doc.data()
+            infoDato.id = doc.id;
+            console.log(infoDato);
+            /*Genera un html
             taskContainer.innerHTML += '<div class="tarjeta_Integrante"><div class="img_Integrante"><img src="' + integranteDato.url_foto +
                 '" alt="' + integranteDato.url_foto +
                 '"></div><h3>' + integranteDato.nombre_integrante +
@@ -45,7 +49,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 '</h4><p>' + integranteDato.desc_integrante +
                 '</p><a href="#"><p>' + integranteDato.social_integrante +
                 '</p></a></div> <div class="botones_carta"><button class="btn btn-primary btn-delete" data-id="' + integranteDato.id + '">Eliminar</button><button class="btn btn-secundary btn-edit" data-id="' + integranteDato.id + '">Editar</button></div></div>';
-
+*/
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
             btnDelete.forEach(btn => {
@@ -59,18 +63,18 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
                 btn.addEventListener('click', async (e) => {
                     const doc = await getIntegrante(e.target.dataset.id);
-                    const integrante = doc.data();
-                    console.log(e.target.dataset.id)
-                    
+                    const datoActualizar = doc.data();
+
                     editStatus = true;
                     id = doc.id;
-
-                    taskForm['llenar_foto'].value = integrante.url_foto;
-                    taskForm['llenar_nombre'].value = integrante.nombre_integrante;
-                    taskForm['llenar_escuela'].value = integrante.escuela_integrante;
-                    taskForm['llenar_desc'].value = integrante.desc_integrante;
-                    taskForm['llenar_social'].value = integrante.social_integrante;
-
+                    taskForm['nombre_producto'].value = datoActualizar.nombre_prod;
+                    taskForm['desc_producto'].value = datoActualizar.desc_prod;
+                    taskForm['cantidad_producto'].value = datoActualizar.cant_prod;
+                    taskForm['precio_producto'].value = datoActualizar.prec_prod;
+                    taskForm['condicion_producto'].value = datoActualizar.cond_prod;
+                    taskForm['foto_producto'].value = datoActualizar.url_prod;
+                    taskForm['calif_producto'].value = datoActualizar.calif_prod
+                    taskForm['categoria_producto'].value = datoActualizar.cat_prod;
                     //Boton de actualizar info (No Tocar)
                     taskForm['subir_registro'].innerText = 'Update';
                 })
@@ -85,22 +89,29 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     // Nombre de variable = nombre de la variable que guarda el id del div a editar['Nombre del id especifico a editar'].value;
-    const url_foto = taskForm['llenar_foto'].value;
-    const nombre_integrante = taskForm['llenar_nombre'].value;
-    const escuela_integrante = taskForm['llenar_escuela'].value;
-    const desc_integrante = taskForm['llenar_desc'].value;
-    const social_integrante = taskForm['llenar_social'].value;
+
+    const nombre_prod = taskForm['nombre_producto'].value;
+    const desc_prod = taskForm['desc_producto'].value;
+    const cant_prod = Number(taskForm['cantidad_producto'].value);
+    const prec_prod = Number(taskForm['precio_producto'].value);
+    const cond_prod = taskForm['condicion_producto'].value;
+    const url_prod = taskForm['foto_producto'].value;
+    const calif_prod = Number(taskForm['calif_producto'].value);
+    const cat_prod = taskForm['categoria_producto'].value;
 
     if (!editStatus) {
-        await saveIntegrantes(url_foto, nombre_integrante, escuela_integrante, desc_integrante, social_integrante);
+        await saveIntegrantes(nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod);
     } else {
 
         await updateIntegrante(id, {
-            url_foto,
-            nombre_integrante,
-            escuela_integrante,
-            desc_integrante,
-            social_integrante
+            nombre_prod,
+            desc_prod,
+            cant_prod,
+            prec_prod,
+            cond_prod,
+            url_prod,
+            calif_prod,
+            cat_prod
         });
         editStatus = false;
 
@@ -108,10 +119,7 @@ taskForm.addEventListener('submit', async (e) => {
         taskForm['subir_registro'].innerText = 'Guardar';
 
     }
-
     getIntegrantes();
     taskForm.reset();
-
-
     //console.log(url_foto, nombre_integrante);
 })
