@@ -1,15 +1,14 @@
 const db = firebase.firestore();
 
-const taskForm = document.getElementById('pagar_div');
 const taskContainer = document.getElementById('impr-carrito');
 const getPago = document.getElementById('impr-carrito');
-const printPago = document.getElementById('pagar_div');
+const printPago = document.getElementById('pagar-div');
 
 
 let carritoOn = false;
 let editStatus = false;
 let id = '';
-const sumaPago = 0;
+
 
 //Funcion para guardar la informacion en la base de datos
 const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) =>
@@ -36,10 +35,17 @@ const editIntegrante = (id) => db.collection('producto').doc(id).get();
 const updateIntegrante = (id, updatedIntegrante) => db.collection('producto').doc(id).update(updatedIntegrante);
 const onGetProductos = (callback) => db.collection('producto').onSnapshot(callback);
 const getProducto = (id) => db.collection('producto').doc(id).get();
+
+//Funcion para sacar el precio
+const precioFinal = (sumaPago)=> sumaPago ;
+
 //Imprimir
 window.addEventListener('DOMContentLoaded', async (e) => {
 
     onGetIntegrantes((querySnapshot) => {
+        //Guardamos los precios en este array
+        var arrayPrecios = [];
+        
         //Borra el contenido anterior dentro del div
         taskContainer.innerHTML = '';
         //Imprimimos los datos guardados en FireBase en la consola
@@ -71,10 +77,11 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             '<div class="col-6 col-md-2 price"><span>x$' + infoDato.prec_prod + '</span></div><div class="d-flex justify-content-around product-name " style="margin-top: 30px; "><button class="btn btn-primary btn-delete" data-id="'+infoDato.id+'" type="button " style="background: rgb(13,136,208); ">Eliminar</button>' +
             '</div>' +
             '</div>';
+            
             let precio = infoDato.prec_prod;
-            var precioTotal = 0;
-            precioTotal = precio + precioTotal;
-            console.log(precioTotal)
+            
+            arrayPrecios.push(precio);
+            console.log(arrayPrecios);
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
             btnDelete.forEach(btn => {
@@ -99,22 +106,34 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
                 })
             })
-            //console.log(infoDato.id)
         })
+
+        //Aquí agregamos la suma total de los productos
+        var sumaPago = 0;
+        for (var i = 0 ; i <arrayPrecios.length; i++) {
+            sumaPago += arrayPrecios[i];
+        }
+        console.log('Costo: $' + sumaPago)
+        precioFinal(sumaPago);
+
+        printPago.innerHTML ='<div class="summary" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;);">'+
+        '<h3 style="color: rgb(13,136,208);">Resumen</h3>'+
+        '<h4><span class="text">Subtotal</span><span class="price">$'+sumaPago+'</span></h4>'+
+        '<h4><span class="text">Descuento</span><span class="price">$0</span></h4>'+
+        '<h4><span class="text">Costo de envío</span><span class="price">$0</span></h4>'+
+        '<h4><span class="text" style="color: rgb(13,136,208);">Total</span><span class="price" style="color: rgb(13,136,208);">$360</span></h4><button class="btn btn-primary btn-lg d-block w-100" type="button" style="background: rgb(13,136,208);"'+
+            'onclick="realizarPedido()">Proceder al pago</button>'+
+    '</div>';
 
     })
 
 });
 
+
+
 //Estructura de la informacion que se guardará a la base de datos
 window.addEventListener('DOMContentLoaded', async (e) => { 
     
-    const pago = sumaPago;
-    const x = 5;
-    const y = 20;
-    function suma(x,y){
-        const c =x+y;
-        console.log(c)
-    }
+    
     
 })
