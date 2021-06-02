@@ -25,7 +25,7 @@ const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod
 //Funcion para imprimir la informacion
 const getIntegrantes = () => db.collection('producto').get();
 const getIntegrante = (id) => db.collection('producto').doc(id).get();
-const addCarrito = (idProducto,nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) => db.collection('carrito').doc().set({idProducto,nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod});
+const addCarrito = (idProducto,nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod,cant_prod_car) => db.collection('carrito').doc().set({idProducto,nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod,cant_prod_car});
 const onGetIntegrantes = (callback) => db.collection('producto').onSnapshot(callback);
 const deleteIntegrante = (id) => db.collection('producto').doc(id).delete();
 const editIntegrante = (id) => db.collection('producto').doc(id).get();
@@ -69,7 +69,18 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     const datoActualizar = doc.data();
                     console.log(e.target.dataset.id)
                     const idProducto = e.target.dataset.id
-                    await addCarrito(idProducto,datoActualizar.nombre_prod, datoActualizar.desc_prod, datoActualizar.cant_prod, datoActualizar.prec_prod, datoActualizar.cond_prod, datoActualizar.url_prod, datoActualizar.calif_prod, datoActualizar.cat_prod);
+                    var cant_prod_car = 1;
+                    await addCarrito(idProducto,
+                        datoActualizar.nombre_prod, 
+                        datoActualizar.desc_prod, 
+                        datoActualizar.cant_prod, 
+                        datoActualizar.prec_prod, 
+                        datoActualizar.cond_prod, 
+                        datoActualizar.url_prod, 
+                        datoActualizar.calif_prod, 
+                        datoActualizar.cat_prod,
+                        cant_prod_car
+                        );
 
                     
                     

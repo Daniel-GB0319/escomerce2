@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Register - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/Simple-Slider.css">
+    <link rel="stylesheet" href="assets/css/general.css">
+    <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+        <div class="container">
+            <div><img src="assets/img/LOGO.png" onclick="inicio()"><img src="assets/img/LETRAS%20LOGO.png" onclick="inicio()"></div><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav d-flex align-items-center align-content-center ms-auto">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="catalogo.html">catalogo</a></li>
+                    <li class="nav-item d-flex flex-row-reverse"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);border-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-top-left-radius: 10px;font-family: Montserrat, sans-serif;"
+                            onclick="verCarrito()"><span>Cantidad</span><i class="fa fa-shopping-cart" style="margin-left: 10px;"></i></button></li>
+                    <li class="nav-item d-flex flex-row-reverse">
+                        <div class="d-flex flex-column-reverse">
+                            <div>
+                                <div class="input-group"><input class="form-control" type="text" style="border-color: RGB(13,136,208);border-top-left-radius: 10px;border-bottom-left-radius: 10px;width: 190px;"><button class="btn btn-primary" type="button" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: rgb(13,136,208);"><i class="fa fa-search" style="width: 80%;"></i></button></div>
+                            </div>
+                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="page registration-page">
+        <section class="clean-block clean-form dark">
+            <div class="container" style="border-color: rgb(52, 73, 94);border-top-color: rgb(52,;border-right-color: 73,;border-bottom-color: 94);border-left-color: 73,;">
+                <div class="block-heading">
+                    <h2 class="text-info">Registrate</h2>
+                    <p>Crea una cuenta de usuario y forma parte de la comunidad de ESCOMMERCE.</p>
+                </div>
+                <form>
+                    <div class="mb-3"><label class="form-label" for="name">Nombre</label><input class="form-control item" type="text" id="name" placeholder="Nombre(s)" required="true"></div>
+                    <div class="mb-3"><label class="form-label" for="password">Apellidos</label><input class="form-control" type="text" placeholder="A. Paterno" required="true"><input class="form-control" type="text" placeholder="A. Materno" required="true" style="margin-top: 10px;"></div>
+                    <div class="mb-3"><label class="form-label" for="email">Boleta</label><input class="form-control" type="number" placeholder="No. Boleta o de empleado" min="2" max="19999999999999"></div>
+                    <div class="mb-3"><label class="form-label" for="email">Correo</label><input class="form-control" type="email" placeholder="Correo institucional" required="true"></div>
+                    <div class="mb-3"><label class="form-label" for="email">Contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
+                    <div class="mb-3"><label class="form-label" for="email">Repite la contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
+                    <div class="mb-3"><label class="form-label" for="email">Escuela</label><select class="form-select" required="true">
+                            <option value="12" selected="">Escuela de procedencia</option>
+                            <option value="13">ESCOM</option>
+                            <option value="14">ESIME Z</option>
+                        </select></div>
+                    <div class="mb-3"><label class="form-label" for="email">Teléfono</label><input class="form-control" type="tel" placeholder="10 dígitos (opcional)"></div>
+                    <div class="mb-3">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="checkVendedorRegistro"><label class="form-check-label" for="formCheck-1">Quiero ser vendedor</label></div>
+                    </div>
+                    <div class="d-block mb-3" id="divINERegistro"><label class="form-label" for="email">INE</label><input class="form-control" type="file"></div>
+                    <div class="d-block mb-3" id="divCLABERegistro"><label class="form-label" for="email">Cuenta CLABE</label><input class="form-control" type="text" placeholder="No. cuenta CLABE"></div><button class="btn btn-primary" type="submit" style="background: rgb(52, 73, 94);border-color: rgb(52, 73, 94);border-top-color: rgb(52,;border-right-color: 73,;border-bottom-color: 94);border-left-color: 73,;"
+                        onclick="inicio()">Regístrate</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer class="page-footer dark">
+        <div class="footer-copyright">
+            <p>© Equipo 3 | Análisis y diseño orientado a objetos | 2CV16 | IPN-ESCOM<br></p>
+        </div>
+    </footer>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/vanilla-zoom.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/Simple-Slider.js"></script>
+</body>
+
+</html>
