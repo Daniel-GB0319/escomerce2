@@ -1,14 +1,16 @@
 const db = firebase.firestore();
 
+
 const taskContainer = document.getElementById('impr-carrito');
 const getPago = document.getElementById('impr-carrito');
 const printPago = document.getElementById('pagar-div');
-
+const pagarButton = document.getElementById('pagar-btn');
 
 let carritoOn = false;
 let editStatus = false;
-
+let idCarritoFinal = '';
 let id = '';
+
 //Funcion para guardar la informacion en la base de datos
 const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) =>
     //Creará la coleccion de la base de datos en Firebase
@@ -38,6 +40,20 @@ const getProducto = (id) => db.collection('producto').doc(id).get();
 const onGetPrecio = (callback) => db.collection('producto').onSnapshot(callback);
 
 
+//BD DE PEDIDO
+
+
+const addCarrito_pedido = (idPedido, idCarritoFinal) => db.collection("Carrito_pedido").doc().set({ idPedido, idCarritoFinal });
+
+const addPedido = (idCarrito, total_pagado, infoPedido) => db.collection("Confirmar_Pedido").doc().set(
+    {
+        idCarrito,
+        total_pagado,
+        infoPedido
+    });
+
+//consulta id producto
+const onGetPedido = (callback) => db.collection('Confirmar_Pedido').onSnapshot(callback);
 //Imprimir
 window.addEventListener('DOMContentLoaded', async (e) => {
 
@@ -45,6 +61,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
         //Guardamos los precios en este array
         var arrayPrecios = [];
+        const infoPedido = [];
 
         //Borra el contenido anterior dentro del div
         taskContainer.innerHTML = '';
@@ -54,7 +71,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             const infoDato = doc.data()
             //ID CARRITO
             infoDato.id = doc.id;
-
+            idCarritoFinal = infoDato.id;
             //console.log('ID Producto:'+infoDato.idProducto);
             //console.log('ID Carrito: '+infoDato.id);
             //const sacarDato = getProducto(infoDato.id);
@@ -73,7 +90,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 '<div></div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Cantidad</label><input type="number" id="' + infoDato.id + '" data-id="' + infoDato.id + '" class="form-control quantity-input valor" min="1" max="'+infoDato.cant_prod+'"value="' + infoDato.cant_prod_car + '"></div>' +
+                '<div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Cantidad</label><input type="number" id="' + infoDato.id + '" data-id="' + infoDato.id + '" class="form-control quantity-input valor" min="1" max="' + infoDato.cant_prod + '"value="' + infoDato.cant_prod_car + '"></div>' +
                 '<div class="col-6 col-md-2 price"><span>$ ' + infoDato.prec_prod + '</span></div><div class="d-flex justify-content-around product-name " style="margin-top: 30px; "><button class="btn btn-primary btn-delete" data-id="' + infoDato.id + '" type="button " style="background: rgb(13,136,208); ">Eliminar</button>' +
                 '</div>' +
                 '</div>';
@@ -101,18 +118,10 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                                     const prec_prod = Number(cant_prod_car * datoOficial.prec_prod);
                                     console.log(doc.id, " => ", prec_prod);
                                     //Valida que la cantidad esté dentro del
-                                    if ((cant_prod_car > datoOficial.cant_prod)) {
-                                        console.log('No hay tantos productos');
-                                        cant_prod_car.value = datoOficial.cant_prod;
 
-                                    }
-                                    if ((cant_prod_car < 1)) {
-                                        console.log('No puedes tener menos de esos productos');
-                                        cant_prod_car.value = 1;
-                                    } else {
-                                        updateCarrito(idProductoCarrito, { cant_prod_car, prec_prod })
-                                        console.log('Enviado')  
-                                    }
+                                    updateCarrito(idProductoCarrito, { cant_prod_car, prec_prod })
+                                    console.log('Enviado')
+
 
                                 }
 
@@ -125,8 +134,8 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 })
             })
 
-            arrayPrecios.push(precio);
-            console.log(arrayPrecios);
+
+            //console.log(arrayPrecios);
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
             btnDelete.forEach(btn => {
@@ -148,30 +157,66 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     await addCarrito(idProducto);
                 })
             })
+
+            arrayPrecios.push(precio);
+            infoPedido.push(
+                {
+                    id_cliente: "1adnVpSOyWxgg5nort4M",
+                    id_producto: infoDato.idProducto,
+                    nombre_prod: infoDato.nombre_prod,
+                    descripcion_prod: infoDato.desc_prod,
+                    imagen_producto: infoDato.url_prod,
+                    cantidad_prod: infoDato.cant_prod_car,
+                    costo_producto: infoDato.prec_prod,
+                });
         })
-
-
-
+        console.log(infoPedido)
         //Aquí agregamos la suma total de los productos
         var sumaPago = 0;
+        var descDevolucion = 0;
+        var costoEnvio = 0;
         var sumaTOTAL = 0;
+
+
+
         for (var i = 0; i < arrayPrecios.length; i++) {
             sumaPago += arrayPrecios[i];
         }
-        
-        sumaTOTAL += sumaPago;
-    
 
+        sumaTOTAL = sumaPago + descDevolucion + costoEnvio;
+
+
+        console.log(infoPedido)
         printPago.innerHTML = '<div class="summary" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;);">' +
             '<h3 style="color: rgb(13,136,208);">Resumen</h3>' +
-            '<h4><span class="text">Subtotal</span><span class="price">$' + sumaPago + '</span></h4>' +
-            '<h4><span class="text">Descuento</span><span class="price">$0</span></h4>' +
-            '<h4><span class="text">Costo de envío</span><span class="price">$0</span></h4>' +
-            '<h4><span class="text" style="color: rgb(13,136,208);">Total</span><span class="price" style="color: rgb(13,136,208);">$ '+sumaTOTAL+'</span></h4><button class="btn btn-primary btn-lg d-block w-100" type="button" style="background: rgb(13,136,208);"' +
-            'onclick="realizarPedido()">Proceder al pago</button>' +
+            '<h4><span class="text">Subtotal</span><span class="price">$ ' + sumaPago + '</span></h4>' +
+            '<h4><span class="text">Descuento</span><span class="price">$ ' + descDevolucion + '</span></h4>' +
+            '<h4><span class="text">Costo de envío</span><span class="price">$ ' + costoEnvio + '</span></h4>' +
+            '<h4><span class="text" style="color: rgb(13,136,208);">Total</span><span class="price" style="color: rgb(13,136,208);">$ ' + sumaTOTAL + '</span></h4><button id="pagar-btn" class="btn btn-pay btn-primary btn-lg d-block w-100" type="button" style="background: rgb(13,136,208);"' +
+            '>Proceder al pago</button>' +
             '</div>';
 
+        const PayBtn = document.querySelectorAll('.btn-pay')
+        PayBtn.forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                await addPedido(idCarritoFinal, sumaTOTAL, infoPedido);
+
+                onGetPedido((querySnapshot) => {
+                    querySnapshot.forEach(doc => {
+                        const consultaCarritoPedido = doc.data()
+                        consultaCarritoPedido.id = doc.id
+                        addCarrito_pedido(consultaCarritoPedido.id, idCarritoFinal);
+                        function redireccionar() { location.href = "realizarPedido.html"; }
+                        setTimeout(redireccionar(), 25000);
+                    });
+                })
+                console.log('Enviado con éxito')
+                //console.log(url_foto, nombre_integrante);
+            })
+        })
+
     })
-    console.log(precioRealProducto(id))
 
 });
