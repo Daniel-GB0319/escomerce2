@@ -10,7 +10,7 @@ let carritoOn = false;
 let editStatus = false;
 let idCarritoFinal = '';
 let id = '';
-
+let idCliente = 'fkGyA6cAf53siIWITwQC';
 //Funcion para guardar la informacion en la base de datos
 const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) =>
     //Creará la coleccion de la base de datos en Firebase
@@ -29,8 +29,7 @@ const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod
 //Funcion para imprimir la informacion
 const getIntegrantes = () => db.collection('producto').get();
 const getIntegrante = (id) => db.collection('carrito').doc(id).get();
-const addCarrito = (idProducto, nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod, cant_prod_car) => db.collection('carrito').doc().set({ idProducto, nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod, cant_prod_car });
-const updateCarrito = (id, cant_prod_car) => db.collection('carrito').doc(id).update(cant_prod_car);
+const updateCarrito = (id, infoProducto) => db.collection('carrito').doc(id).update({infoProducto});
 const onGetIntegrantes = (callback) => db.collection('carrito').onSnapshot(callback);
 const deleteProductoCarrito = (id) => db.collection('carrito').doc(id).delete();
 const editIntegrante = (id) => db.collection('producto').doc(id).get();
@@ -38,6 +37,8 @@ const updateIntegrante = (id, updatedIntegrante) => db.collection('producto').do
 const onGetProductos = (callback) => db.collection('producto').onSnapshot(callback);
 const getProducto = (id) => db.collection('producto').doc(id).get();
 const onGetPrecio = (callback) => db.collection('producto').onSnapshot(callback);
+
+const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({ idProducto, datosProducto, precioProducto });
 
 
 //BD DE PEDIDO
@@ -72,105 +73,147 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             //ID CARRITO
             infoDato.id = doc.id;
             idCarritoFinal = infoDato.id;
-            //console.log('ID Producto:'+infoDato.idProducto);
-            //console.log('ID Carrito: '+infoDato.id);
-            //const sacarDato = getProducto(infoDato.id);
-            //console.log(sacarDato);
-            //Genera un html
-            taskContainer.innerHTML += '<div class="product">' +
-                '<div class="row justify-content-center align-items-center">' +
-                '<div class="col-md-3">' +
-                '<div class="product-image"><img class="img-fluid d-block mx-auto image" src="' + infoDato.url_prod + '"></div>' +
-                '</div>' +
-                '<div class="col-md-5 product-info"><a class="product-name" href="#" style="color: rgb(13,136,208);">' + infoDato.nombre_prod + '</a>' +
-                '<div class="product-specs">' +
-                '<div><span>Detalles:&nbsp;</span><span class="value">' + infoDato.desc_prod + '</span></div>' +
-                '<div></div>' +
-                '<div></div>' +
-                '<div></div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Cantidad</label><input type="number" id="' + infoDato.id + '" data-id="' + infoDato.id + '" class="form-control quantity-input valor" min="1" max="' + infoDato.cant_prod + '"value="' + infoDato.cant_prod_car + '"></div>' +
-                '<div class="col-6 col-md-2 price"><span>$ ' + infoDato.prec_prod + '</span></div><div class="d-flex justify-content-around product-name " style="margin-top: 30px; "><button class="btn btn-primary btn-delete" data-id="' + infoDato.id + '" type="button " style="background: rgb(13,136,208); ">Eliminar</button>' +
-                '</div>' +
-                '</div>';
-            let precio = Number(infoDato.prec_prod);
+            //console.log("ID Carrito: " + infoDato.id)
+            console.log(infoDato)
+            infoDato.infoProducto.forEach((datos,index) => {
+                //ID de los Productos
+                //console.log(datos.id_prod)
+                
+                taskContainer.innerHTML += '<div class="product">' +
+                    '<div class="row justify-content-center align-items-center">' +
+                    '<div class="col-md-3">' +
+                    '<div class="product-image"><img class="img-fluid d-block mx-auto image" src="' + datos.url_prod + '"></div>' +
+                    '</div>' +
+                    '<div class="col-md-5 product-info"><a data-id="' + datos.id_prod + '" class="product-name btn-desc"  style="color: rgb(13,136,208);">' + datos.nombre_prod + '</a>' +
+                    '<div class="product-specs">' +
+                    '<div><span>Detalles:&nbsp;</span><span class="value">' + datos.desc_prod + '</span></div>' +
+                    '<div></div>' +
+                    '<div></div>' +
+                    '<div></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Cantidad</label><input type="number" id="' + datos.id_prod + '" data-id="' + datos.id_prod + '" class="form-control quantity-input valor" min="1" max="' + datos.cant_prod + '"value="' + datos.cant_prod_car + '"></div>' +
+                    '<div class="col-6 col-md-2 price"><span>$ ' + datos.prec_prod + '</span></div><div class="d-flex justify-content-around product-name " style="margin-top: 30px; "><button class="btn btn-primary btn-delete" data-id="' + datos.id_prod + '" type="button " style="background: rgb(13,136,208); ">Eliminar</button>' +
+                    '</div>' +
+                    '</div>';
+                
+                    
+                let precio = Number(datos.prec_prod);
 
-            const addCantidad = document.querySelectorAll('.valor');
+                const btnDesc = document.querySelectorAll('.btn-desc');
 
-            addCantidad.forEach((valor) => {
-                valor.addEventListener('click', async (e) => {
-                    const doc = await getIntegrante(e.target.dataset.id);
-                    const idProductoCarrito = doc.id; //ID CARRITO
-                    const cant_update = (doc.data());
-                    const datoCantidad = document.getElementById(e.target.dataset.id)
-                    const cant_prod_car = Number(datoCantidad.value);
+                //Vamos  la vista Descripcion del producto
+                btnDesc.forEach(btn => {
+
+                    btn.addEventListener('click', async (e) => {
+                        
+                        const doc = await getProducto(e.target.dataset.id);
+                        const datoVer = doc.data();
+                        const idProducto = e.target.dataset.id
+                        const precioProducto = datoVer.prec_prod
+                        console.log(datoVer)
+                        
+                        const datosProducto = [{
+                            nom_prod: datoVer.nombre_prod,
+                            desc_prod: datoVer.desc_prod,
+                            cantidad_prod: datoVer.cant_prod,
+                            estado_prod: datoVer.cond_prod,
+                            foto_prod: datoVer.url_prod,
+                            rate_prod: datoVer.calif_prod,
+                            categoria_prod: datoVer.cat_prod,
+                        }];
+                        await addVerProducto(idProducto, datosProducto, precioProducto);
+                        function redireccionar() { location.href = "descripcionProducto.html"; }
+                        setTimeout(redireccionar(), 25000);
+                        
+                    })
+                })
 
 
-                    var DBproduc = db.collection("producto");
-                    //Consulta en firebase para conseguir nombre del producto 
-                    DBproduc.where("nombre_prod", "==", cant_update.nombre_prod).get()
-                        .then((querySnapshot) => {
-                            querySnapshot.forEach((doc) => {
-                                //Aqui validamos si el ID del producto coincide con el ID del producto en el carrito
-                                datoOficial = doc.data()
-                                if (doc.id == cant_update.idProducto) {
-                                    const prec_prod = Number(cant_prod_car * datoOficial.prec_prod);
-                                    console.log(doc.id, " => ", prec_prod);
-                                    //Valida que la cantidad esté dentro del
+                const addCantidad = document.querySelectorAll('.valor');
 
-                                    updateCarrito(idProductoCarrito, { cant_prod_car, prec_prod })
-                                    console.log('Enviado')
-
-
-                                }
-
-                            });
+                addCantidad.forEach((valor) => {
+                    valor.addEventListener('click', async (e) => {
+                        const doc = await getIntegrante(infoDato.id);
+                        const idCarrito = infoDato.id; //ID del Carrito
+                        const actualizarCarrito = (doc.data());
+                        //actualizarCarrito.infoProducto //Selecciona todos los productos 
+                        const datoCantidad = document.getElementById(e.target.dataset.id)
+                        const cant_prod_car = Number(datoCantidad.value);
+                        const encontrarDato = actualizarCarrito.infoProducto.find(item =>{
+                            return item.id_prod === e.target.dataset.id
                         })
-                        .catch((error) => {
-                            console.log("Error getting documents: ", error);
-                        });
+                        console.log(encontrarDato.id_prod)
+                        
 
+                        var DBproduc = db.collection("producto");
+                        //Consulta en firebase para conseguir nombre del producto 
+                        DBproduc.where("nombre_prod", "==", encontrarDato.nombre_prod).get()
+                            .then((querySnapshot) => {
+
+                                
+                                querySnapshot.forEach((doc) => {
+                                        
+                                    //Aqui validamos si el ID del producto coincide con el ID del producto en el carrito
+                                    datoOficial = doc.data()
+                                     
+                                    if (doc.id == encontrarDato.id_prod) {
+                                        const prec_prod = Number(cant_prod_car * datoOficial.prec_prod);
+                                        console.log(doc.id, " => ", prec_prod);
+                                        //Valida que la cantidad esté dentro del rango
+                                        console.log(idCarrito)
+                                        const datosProducto = [{
+                                            nombre_prod : encontrarDato.nombre_prod,
+                                            desc_prod : encontrarDato.desc_prod,
+                                            cant_prod : encontrarDato.cant_prod,
+                                            prec_prod: prec_prod,
+                                            cond_prod : encontrarDato.cond_prod,
+                                            url_prod : encontrarDato.url_prod,
+                                            calif_prod : encontrarDato.calif_prod,
+                                            cat_prod : encontrarDato.cat_prod,
+                                            id_prod : encontrarDato.id_prod,
+                                            cant_prod_car: cant_prod_car
+                                        }]
+                                        
+                                        updateCarrito(idCarrito, datosProducto)
+                                        console.log('Enviado')
+                                    }
+
+                                });
+                                
+                            })
+                            .catch((error) => {
+                                console.log("Error getting documents: ", error);
+                            });
+                            
+                    })
                 })
-            })
 
 
-            //console.log(arrayPrecios);
-            const btnDelete = document.querySelectorAll('.btn-delete');
-            //console.log(btnDelete)
-            btnDelete.forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    console.log(e.target.dataset.id)
-                    await deleteProductoCarrito(e.target.dataset.id);
+                //console.log(arrayPrecios);
+                const btnDelete = document.querySelectorAll('.btn-delete');
+                //console.log(btnDelete)
+                btnDelete.forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        console.log(e.target.dataset.id)
+                        await deleteProductoCarrito(e.target.dataset.id);
+                    })
                 })
+
+                arrayPrecios.push(precio);
+                infoPedido.push(
+                    {
+                        id_cliente: "1adnVpSOyWxgg5nort4M",
+                        id_producto: datos.idProducto,
+                        nombre_prod: datos.nombre_prod,
+                        descripcion_prod: datos.desc_prod,
+                        imagen_producto: datos.url_prod,
+                        cantidad_prod: datos.cant_prod_car,
+                        costo_producto: datos.prec_prod,
+                    });
             })
-
-            const btnAdd = document.querySelectorAll('.btn-add');
-
-            btnAdd.forEach(btn => {
-
-                btn.addEventListener('click', async (e) => {
-                    const doc = await getIntegrante(e.target.dataset.id);
-                    const datoActualizar = doc.data();
-                    console.log(e.target.dataset.id)
-                    const idProducto = e.target.dataset.id
-                    await addCarrito(idProducto);
-                })
-            })
-
-            arrayPrecios.push(precio);
-            infoPedido.push(
-                {
-                    id_cliente: "1adnVpSOyWxgg5nort4M",
-                    id_producto: infoDato.idProducto,
-                    nombre_prod: infoDato.nombre_prod,
-                    descripcion_prod: infoDato.desc_prod,
-                    imagen_producto: infoDato.url_prod,
-                    cantidad_prod: infoDato.cant_prod_car,
-                    costo_producto: infoDato.prec_prod,
-                });
         })
-        console.log(infoPedido)
+
         //Aquí agregamos la suma total de los productos
         var sumaPago = 0;
         var descDevolucion = 0;
@@ -186,7 +229,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         sumaTOTAL = sumaPago + descDevolucion + costoEnvio;
 
 
-        console.log(infoPedido)
+
         printPago.innerHTML = '<div class="summary" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;);">' +
             '<h3 style="color: rgb(13,136,208);">Resumen</h3>' +
             '<h4><span class="text">Subtotal</span><span class="price">$ ' + sumaPago + '</span></h4>' +

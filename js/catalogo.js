@@ -3,10 +3,12 @@ const db = firebase.firestore();
 const taskForm = document.getElementById('imp-catalogo');
 const taskContainer = document.getElementById('imp-catalogo');
 
+
 let carritoOn = false;
 let editStatus = false;
 let id = '';
-
+let idCliente = 'fkGyA6cAf53siIWITwQC';
+let idCarritoComprar = idCliente +'1';
 //Funcion para guardar la informacion en la base de datos
 const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) =>
     //Creará la coleccion de la base de datos en Firebase
@@ -24,12 +26,20 @@ const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod
 
 //Funcion para imprimir la informacion
 const getIntegrantes = () => db.collection('producto').get();
-const getIntegrante = (id) => db.collection('producto').doc(id).get();
-const addCarrito = (idProducto,nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod,cant_prod_car) => db.collection('carrito').doc().set({idProducto,nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod,cant_prod_car});
+const getProducto = (id) => db.collection('producto').doc(id).get();
+const addCarrito = (idCarritoProd,idCliente,infoProducto) => db.collection('carrito').doc(idCarritoProd).set({idCliente,infoProducto });
 const onGetIntegrantes = (callback) => db.collection('producto').onSnapshot(callback);
 const deleteIntegrante = (id) => db.collection('producto').doc(id).delete();
 const editIntegrante = (id) => db.collection('producto').doc(id).get();
 const updateIntegrante = (id, updatedIntegrante) => db.collection('producto').doc(id).update(updatedIntegrante);
+
+//Pagina ver producto
+const onGetVerIdProducto = (callback) => db.collection('ver_Producto').onSnapshot(callback);
+const onGetProductos = (id) => db.collection('producto').doc(id).get();
+
+
+
+const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({ idProducto, datosProducto, precioProducto });
 
 //Imprimir
 window.addEventListener('DOMContentLoaded', async (e) => {
@@ -37,19 +47,20 @@ window.addEventListener('DOMContentLoaded', async (e) => {
     onGetIntegrantes((querySnapshot) => {
         //Borra el contenido anterior dentro del div
         taskContainer.innerHTML = '';
+        const datosProducto = [];
         //Imprimimos los datos guardados en FireBase en la consola
         querySnapshot.forEach(doc => {
-
+            
             const infoDato = doc.data()
             infoDato.id = doc.id;
             //console.log(infoDato);
             //Genera un html
             taskContainer.innerHTML += '<div class="col-12 col-md-6 col-lg-4"><div class="clean-product-item"><div class="product-name"><a href="#">' + infoDato.nombre_prod + '</a></div>' +
-                '<div class="image"><a><img class="img-fluid d-block mx-auto" src="'+infoDato.url_prod+'"></a></div>' +
+                '<div class="image"><a><img class="img-fluid d-block mx-auto" src="' + infoDato.url_prod + '"></a></div>' +
                 '<div class="product-name"><a>' + infoDato.desc_prod + ' ID:' + infoDato.id + '</a></div><div class="product-name"></div><div class="about"><div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>' +
                 '<div class="price"><h3>$' + infoDato.prec_prod + '</h3></div>' +
                 '</div><div class="d-flex justify-content-around product-name" style="margin-top: 30px;">' +
-                '<button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Ver</button><button data-id="'+infoDato.id+'"class="btn btn-primary btn-add" type="button" style="background: rgb(13,136,208);">Comprar</button></div></div></div>';
+                '<button data-id="' + infoDato.id + '" class="btn btn-primary btn-desc" type="button" style="background: rgb(13,136,208);">Ver</button><button data-id="' + infoDato.id + '"class="btn btn-primary btn-add" type="button" style="background: rgb(13,136,208);">Comprar</button></div></div></div>';
 
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
@@ -61,29 +72,58 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             })
 
             const btnAdd = document.querySelectorAll('.btn-add');
-            
-            btnAdd.forEach( btn => {
-                
+
+            btnAdd.forEach(btn => {
+
                 btn.addEventListener('click', async (e) => {
-                    const doc = await getIntegrante(e.target.dataset.id);
+                    const doc = await getProducto(e.target.dataset.id);
                     const datoActualizar = doc.data();
                     console.log(e.target.dataset.id)
                     const idProducto = e.target.dataset.id
                     var cant_prod_car = 1;
-                    await addCarrito(idProducto,
-                        datoActualizar.nombre_prod, 
-                        datoActualizar.desc_prod, 
-                        datoActualizar.cant_prod, 
-                        datoActualizar.prec_prod, 
-                        datoActualizar.cond_prod, 
-                        datoActualizar.url_prod, 
-                        datoActualizar.calif_prod, 
-                        datoActualizar.cat_prod,
-                        cant_prod_car
-                        );
+                    datoActualizar.id = doc.id;
+                    
+                    datosProducto.push({
+                        nombre_prod : datoActualizar.nombre_prod,
+                        desc_prod : datoActualizar.desc_prod,
+                        cant_prod : datoActualizar.cant_prod,
+                        prec_prod : datoActualizar.prec_prod,
+                        cond_prod : datoActualizar.cond_prod,
+                        url_prod : datoActualizar.url_prod,
+                        calif_prod : datoActualizar.calif_prod,
+                        cat_prod : datoActualizar.cat_prod,
+                        id_prod : idProducto,
+                        cant_prod_car: cant_prod_car
+                    })
+                    
+                    await addCarrito(idCarritoComprar,idCliente,datosProducto);
+                })
+            })
 
-                    
-                    
+            const btnDesc = document.querySelectorAll('.btn-desc');
+
+            //Vamos  la vista Descripcion del producto
+            btnDesc.forEach(btn => {
+
+                btn.addEventListener('click', async (e) => {
+
+                    const doc = await getProducto(e.target.dataset.id);
+                    const datoVer = doc.data();
+                    //console.log(e.target.dataset.id)
+                    const idProducto = e.target.dataset.id
+                    const precioProducto = datoVer.prec_prod
+                    const datosProducto = [{
+                        nom_prod: datoVer.nombre_prod,
+                        desc_prod: datoVer.desc_prod,
+                        cantidad_prod: datoVer.cant_prod,
+                        estado_prod: datoVer.cond_prod,
+                        foto_prod: datoVer.url_prod,
+                        rate_prod: datoVer.calif_prod,
+                        categoria_prod: datoVer.cat_prod,
+                    }];
+                    await addVerProducto(idProducto, datosProducto, precioProducto);
+                    function redireccionar() { location.href = "descripcionProducto.html"; }
+                    setTimeout(redireccionar(), 25000);
                 })
             })
 
@@ -91,7 +131,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             btnEdit.forEach(btn => {
 
                 btn.addEventListener('click', async (e) => {
-                    const doc = await getIntegrante(e.target.dataset.id);
+                    const doc = await getProducto(e.target.dataset.id);
                     const datoActualizar = doc.data();
 
                     editStatus = true;

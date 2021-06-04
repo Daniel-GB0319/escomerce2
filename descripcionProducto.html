@@ -41,11 +41,11 @@
     </nav>
     <main class="page product-page">
         <section class="clean-block clean-product dark">
-            <div class="container" id="infop">
-                <div class="d-flex block-heading" style="width: 100vw;"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Regresar</button></div>
-                <div class="block-content" >
-                    <div class="product-info">
-                        <div class="row" >
+            <div class="container">
+                <div class="d-flex block-heading" style="width: 100vw;"><button id="back-btn"class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Regresar</button></div>
+                <div class="block-content">
+                    <div id="imp-producto-arriba" class="product-info">
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="gallery">
                                     <div id="product-preview" class="vanilla-zoom">
@@ -56,21 +56,11 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="info">
-                                    <div class="nameP">
-                                        <h3>Nombre: </h3>
-                                    </div>
-                                    <div class="calificacion">
-                                        <h3>Calificacion: </h3>
-                                    </div>
+                                    <h3>Nombre de producto</h3>
+                                    <div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>
                                     <div class="price">
                                         <h3>$300.00</h3>
-                                    </div>
-                                    <a href="carrito.html">
-                                        <button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">
-                                            <i class="icon-basket"></i>
-                                            Añadir al carrito
-                                        </button>
-                                    </a>
+                                    </div><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);"><i class="icon-basket"></i>Añadir al carrito</button>
                                     <div class="summary">
                                         <p>Descripcion del producto.</p>
                                     </div>
@@ -86,6 +76,27 @@
                                 <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" id="reviews-tab" href="#reviews">Comentarios del producto</a></li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade description" role="tabpanel" id="description">
+                                    <p>Descripcion header.</p>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <figure class="figure"><img class="img-fluid figure-img" src="assets/img/subirImagen.png"></figure>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <h4>Caracteristica 1</h4>
+                                            <p>Descripcion de caracteristica 1</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-7 right">
+                                            <h4>Caracteristica 2</h4>
+                                            <p>Descripcion caracteristica 2.</p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <figure class="figure"><img class="img-fluid figure-img" src="assets/img/subirImagen.png"></figure>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="tab-pane fade specifications" role="tabpanel" id="specifications">
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
@@ -129,7 +140,46 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="clean-related-items">
+                        <h3>Te podría interesar<br></h3>
+                        <div class="items">
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="clean-related-item">
+                                        <div class="image">
+                                            <a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/subirImagen.png"></a>
+                                        </div>
+                                        <div class="related-name"><a href="#">Nombre producto</a>
+                                            <div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>
+                                            <h4>$300</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="clean-related-item">
+                                        <div class="image">
+                                            <a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/subirImagen.png"></a>
+                                        </div>
+                                        <div class="related-name"><a href="#">Nombre producto</a>
+                                            <div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>
+                                            <h4>$300</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="clean-related-item">
+                                        <div class="image">
+                                            <a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/subirImagen.png"></a>
+                                        </div>
+                                        <div class="related-name"><a href="#">Nombre producto</a>
+                                            <div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>
+                                            <h4>$300</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -139,36 +189,36 @@
             <p>© Equipo 3 | Análisis y diseño orientado a objetos | 2CV16 | IPN-ESCOM<br></p>
         </div>
     </footer>
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
 
-        <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-storage.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
-    
-        <script>
-            // Your web app's Firebase configuration
-            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-            var firebaseConfig = {
-                apiKey: "AIzaSyC5pkmnPgxN2fF58oCj47RMMQBBoqJXTyc",
-                authDomain: "escommerce-6dadb.firebaseapp.com",
-                databaseURL: "https://escommerce-6dadb-default-rtdb.firebaseio.com",
-                projectId: "escommerce-6dadb",
-                storageBucket: "escommerce-6dadb.appspot.com",
-                messagingSenderId: "963353940793",
-                appId: "1:963353940793:web:168c75d0b777d32a230ee8",
-                measurementId: "G-G7D0QTM0PQ"
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-    
-            var defaultStorage = firebase.storage();
-    
-        </script>
-    <script src="js/producto.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+  https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyC5pkmnPgxN2fF58oCj47RMMQBBoqJXTyc",
+            authDomain: "escommerce-6dadb.firebaseapp.com",
+            databaseURL: "https://escommerce-6dadb-default-rtdb.firebaseio.com",
+            projectId: "escommerce-6dadb",
+            storageBucket: "escommerce-6dadb.appspot.com",
+            messagingSenderId: "963353940793",
+            appId: "1:963353940793:web:168c75d0b777d32a230ee8",
+            measurementId: "G-G7D0QTM0PQ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        var defaultStorage = firebase.storage();
+
+    </script>
+    <script src="./js/descProd.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
