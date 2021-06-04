@@ -1,6 +1,5 @@
 const db = firebase.firestore();
 
-
 const taskContainer = document.getElementById('impr-carrito');
 const getPago = document.getElementById('impr-carrito');
 const printPago = document.getElementById('pagar-div');
@@ -8,16 +7,14 @@ const pagarButton = document.getElementById('pagar-btn');
 
 let carritoOn = false;
 let editStatus = false;
-let idCarritoFinal = '';
 let id = '';
-let idCliente = 'fkGyA6cAf53siIWITwQC';
 //Funcion para guardar la informacion en la base de datos
 
 //Funcion para imprimir la informacion
 const getIntegrantes = () => db.collection('producto').get();
 const getCarrito = (id) => db.collection('carrito').doc(id).get();
 const updateCarrito = (id, infoProducto) => db.collection('carrito').doc(id).update({ infoProducto });
-const onGetIntegrantes = (callback) => db.collection('carrito').onSnapshot(callback);
+const onGetCarritos = (callback) => db.collection('carrito').onSnapshot(callback);
 const deleteProductoCarrito = (id, infoProducto) => db.collection('carrito').doc(id).update({ infoProducto });
 const editIntegrante = (id) => db.collection('producto').doc(id).get();
 const updateIntegrante = (id, updatedIntegrante) => db.collection('producto').doc(id).update(updatedIntegrante);
@@ -25,7 +22,11 @@ const onGetProductos = (callback) => db.collection('producto').onSnapshot(callba
 const getProducto = (id) => db.collection('producto').doc(id).get();
 const onGetPrecio = (callback) => db.collection('producto').onSnapshot(callback);
 
-const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({ idProducto, datosProducto, precioProducto });
+const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({ 
+    idProducto, 
+    datosProducto, 
+    precioProducto 
+});
 
 
 //BD DE PEDIDO
@@ -33,19 +34,19 @@ const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collect
 
 const addCarrito_pedido = (idPedido, idCarritoFinal) => db.collection("Carrito_pedido").doc().set({ idPedido, idCarritoFinal });
 
-const addPedido = (idCarrito, total_pagado, infoPedido) => db.collection("Confirmar_Pedido").doc().set(
-    {
-        idCarrito,
-        total_pagado,
-        infoPedido
-    });
+const addPedido = (idCarrito, idCliente, total_pagado, infoPedido) => db.collection("Carrito_pedido").doc().set({ 
+    idCarrito,
+    idCliente,
+    total_pagado,
+    infoPedido 
+});
 
 //consulta id producto
 const onGetPedido = (callback) => db.collection('Confirmar_Pedido').onSnapshot(callback);
 //Imprimir
 window.addEventListener('DOMContentLoaded', async (e) => {
 
-    onGetIntegrantes((querySnapshot) => {
+    onGetCarritos((querySnapshot) => {
 
         //Guardamos los precios en este array
         var arrayPrecios = [];
@@ -59,10 +60,12 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             const infoDato = doc.data()
             //ID CARRITO
             infoDato.id = doc.id;
-            idCarritoFinal = infoDato.id;
             //console.log("ID Carrito: " + infoDato.id)
             console.log(infoDato.infoProducto)
-            infoDato.infoProducto.forEach((datos, index) => {
+            sessionStorage.setItem('IDClientePago', infoDato.idCliente)
+            sessionStorage.setItem('IDCarritoPago', infoDato.id)
+
+            infoDato.infoProducto.forEach((datos) => {
                 //ID de los Productos
                 //console.log(datos.id_prod)
 
@@ -86,7 +89,6 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
 
                 let precio = Number(datos.prec_prod);
-
                 const btnDesc = document.querySelectorAll('.btn-desc');
 
                 //Vamos  la vista Descripcion del producto
@@ -221,8 +223,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 arrayPrecios.push(precio);
                 infoPedido.push(
                     {
-                        id_cliente: "1adnVpSOyWxgg5nort4M",
-                        id_producto: datos.idProducto,
+                        id_producto: datos.id_prod,
                         nombre_prod: datos.nombre_prod,
                         descripcion_prod: datos.desc_prod,
                         imagen_producto: datos.url_prod,
@@ -236,7 +237,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         var sumaPago = 0;
         var descDevolucion = 0;
         var costoEnvio = 0;
-        var sumaTOTAL = 0;
+        var total_pagado = 0;
 
 
 
@@ -244,16 +245,14 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             sumaPago += arrayPrecios[i];
         }
 
-        sumaTOTAL = sumaPago + descDevolucion + costoEnvio;
-
-
+        total_pagado = sumaPago + descDevolucion + costoEnvio;
 
         printPago.innerHTML = '<div class="summary" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;);">' +
             '<h3 style="color: rgb(13,136,208);">Resumen</h3>' +
             '<h4><span class="text">Subtotal</span><span class="price">$ ' + sumaPago + '</span></h4>' +
             '<h4><span class="text">Descuento</span><span class="price">$ ' + descDevolucion + '</span></h4>' +
             '<h4><span class="text">Costo de envío</span><span class="price">$ ' + costoEnvio + '</span></h4>' +
-            '<h4><span class="text" style="color: rgb(13,136,208);">Total</span><span class="price" style="color: rgb(13,136,208);">$ ' + sumaTOTAL + '</span></h4><button id="pagar-btn" class="btn btn-pay btn-primary btn-lg d-block w-100" type="button" style="background: rgb(13,136,208);"' +
+            '<h4><span class="text" style="color: rgb(13,136,208);">Total</span><span class="price" style="color: rgb(13,136,208);">$ ' + total_pagado + '</span></h4><button id="pagar-btn" class="btn btn-pay btn-primary btn-lg d-block w-100" type="button" style="background: rgb(13,136,208);"' +
             '>Proceder al pago</button>' +
             '</div>';
 
@@ -261,20 +260,12 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         PayBtn.forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 e.preventDefault();
+                const idClientePagar = String(sessionStorage.getItem('IDClientePago'));
+                const idCarritoPagar = String(sessionStorage.getItem('IDCarritoPago'));
 
-                await addPedido(idCarritoFinal, sumaTOTAL, infoPedido);
-
-                onGetPedido((querySnapshot) => {
-                    querySnapshot.forEach(doc => {
-                        const consultaCarritoPedido = doc.data()
-                        consultaCarritoPedido.id = doc.id
-                        addCarrito_pedido(consultaCarritoPedido.id, idCarritoFinal);
-                        function redireccionar() { location.href = "realizarPedido.html"; }
-                        setTimeout(redireccionar(), 25000);
-                    });
-                })
-                console.log('Enviado con éxito')
-                //console.log(url_foto, nombre_integrante);
+                //console.log(idCarritoPagar,idClientePagar,total_pagado,infoPedido);
+                addPedido(idCarritoPagar, idClientePagar, total_pagado, infoPedido);
+                console.log("Enviado al Pago")
             })
         })
 
