@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             infoDato.id = doc.id;
             idCarritoFinal = infoDato.id;
             //console.log("ID Carrito: " + infoDato.id)
-            console.log(infoDato)
+            console.log(infoDato.infoProducto)
             infoDato.infoProducto.forEach((datos,index) => {
                 //ID de los Productos
                 //console.log(datos.id_prod)
@@ -141,11 +141,20 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                         const datoCantidad = document.getElementById(e.target.dataset.id)
                         const cant_prod_car = Number(datoCantidad.value);
                         const encontrarDato = actualizarCarrito.infoProducto.find(item =>{
-                            return item.id_prod === e.target.dataset.id
+                            return item.id_prod === e.target.dataset.id;
                         })
-                        console.log(encontrarDato.id_prod)
                         
-
+                        const indexModificar = actualizarCarrito.infoProducto.findIndex(item => {
+                            return item.id_prod === e.target.dataset.id;
+                        })
+                        
+                        /*
+                        console.log("Objeto: ")
+                        console.log(infoDato.infoProducto)
+                        console.log("Busqueda: ")
+                        console.log("Indice: "+ indexModificar + " : " + encontrarDato.nombre_prod)
+                        */
+                        
                         var DBproduc = db.collection("producto");
                         //Consulta en firebase para conseguir nombre del producto 
                         DBproduc.where("nombre_prod", "==", encontrarDato.nombre_prod).get()
@@ -161,8 +170,8 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                                         const prec_prod = Number(cant_prod_car * datoOficial.prec_prod);
                                         console.log(doc.id, " => ", prec_prod);
                                         //Valida que la cantidad esté dentro del rango
-                                        console.log(idCarrito)
-                                        const datosProducto = [{
+                                        console.log(indexModificar +"Consulta Antes: ")
+                                        const datosProducto = {
                                             nombre_prod : encontrarDato.nombre_prod,
                                             desc_prod : encontrarDato.desc_prod,
                                             cant_prod : encontrarDato.cant_prod,
@@ -173,9 +182,13 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                                             cat_prod : encontrarDato.cat_prod,
                                             id_prod : encontrarDato.id_prod,
                                             cant_prod_car: cant_prod_car
-                                        }]
+                                        }
+                                        //console.log(actualizarCarrito.infoProducto)
+                                        const modificarDato = actualizarCarrito.infoProducto.splice(indexModificar, 1, datosProducto)
+                                        //console.log(indexModificar +"Consulta Despues: ")
+                                        //console.log(actualizarCarrito.infoProducto)
                                         
-                                        updateCarrito(idCarrito, datosProducto)
+                                        updateCarrito(idCarrito, actualizarCarrito.infoProducto)
                                         console.log('Enviado')
                                     }
 
