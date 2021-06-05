@@ -5,10 +5,10 @@ const totalPedido = document.getElementById('divTotal');
 const taskForm = document.getElementById('form_metodoPago');
 
 let carritoOn = false;
-let idCarritoBuscar = '';
+let idCarritoBuscar = ''
 let productosConfirmados = [];
 //Funcion para imprimir la informacion
-const onGetCarrito = (callback) => db.collection('Carrito_pedido').onSnapshot(callback);
+const onGetCarrito = (callback) => db.collection('carrito').onSnapshot(callback);
 const onGetPedido = (callback) => db.collection('Confirmar_Pedido').onSnapshot(callback);
 db.collection('Confirmar_Pedido');
 
@@ -31,10 +31,11 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             consultaCarrito_Pedido.id = doc.id;
             //console.log("ID Carrito:"+consultaCarrito_Pedido.idCarritoFinal)
             //console.log("ID Pedido:"+consultaCarrito_Pedido.idPedido)
-            idCarritoBuscar = consultaCarrito_Pedido.idCarritoFinal;
+            console.log("ID: "+consultaCarrito_Pedido.id)
+            idCarritoBuscar = consultaCarrito_Pedido.id;
 
         });
-        db.collection('Confirmar_Pedido').where('idCarrito', '==', idCarritoBuscar)
+        db.collection('Carrito_pedido').where('idCarrito', '==', idCarritoBuscar)
             .get().then((querySnapshot) => {
                 imprPedido.innerHTML = ''
                 totalPedido.innerHTML = '';

@@ -22,10 +22,10 @@ const onGetProductos = (callback) => db.collection('producto').onSnapshot(callba
 const getProducto = (id) => db.collection('producto').doc(id).get();
 const onGetPrecio = (callback) => db.collection('producto').onSnapshot(callback);
 
-const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({ 
-    idProducto, 
-    datosProducto, 
-    precioProducto 
+const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({
+    idProducto,
+    datosProducto,
+    precioProducto
 });
 
 
@@ -34,11 +34,11 @@ const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collect
 
 const addCarrito_pedido = (idPedido, idCarritoFinal) => db.collection("Carrito_pedido").doc().set({ idPedido, idCarritoFinal });
 
-const addPedido = (idCarrito, idCliente, total_pagado, infoPedido) => db.collection("Carrito_pedido").doc().set({ 
+const addPedido = (idCarrito, idCliente, total_pagado, infoPedido) => db.collection("Carrito_pedido").doc().set({
     idCarrito,
     idCliente,
     total_pagado,
-    infoPedido 
+    infoPedido
 });
 
 //consulta id producto
@@ -264,8 +264,10 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 const idCarritoPagar = String(sessionStorage.getItem('IDCarritoPago'));
 
                 //console.log(idCarritoPagar,idClientePagar,total_pagado,infoPedido);
-                addPedido(idCarritoPagar, idClientePagar, total_pagado, infoPedido);
+                await addPedido(idCarritoPagar, idClientePagar, total_pagado, infoPedido);
                 console.log("Enviado al Pago")
+                function redireccionar() { location.href = "./realizarPedido.html"; }
+                setTimeout(redireccionar(), 25000);
             })
         })
 
