@@ -1,66 +1,56 @@
+
 const db = firebase.firestore();
+const form = document.getElementById('form_login');
+let op = false;
+var idCliente;
+var email;
+var password;
+var estadoCuentaf;
 /*const taskForm = document.getElementById('form_login');*/
-addEventListener('click', async (e) => {
-    var email = document.getElementById('emailCliente').value;
-    var password = document.getElementById('passwordCliente').value;
-    var op;
-    db.collection("clientes").where("emailCliente", "==", email)
-    .get()
-    .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            
-            // doc.data() is never undefined for query doc snapshots
-            const dato = doc.get("emailCliente");
-            const dato1 = doc.get("passwordCliente");
-            if(email=dato){
-                console.log("ya registrado");
-                if(password==dato1){
-                    console.log("acceso correcto");
-                    op = 0;
-                    addEventListener('submit', async (e) => {
-                        window.location = "./index.html";
-                    });
-                }else{
-                    console.log("contraseña incorrecta");
-                    op = 1;
-                }
-        }else{
-            //mensaje de error
-            console.log("correo no registrado")
-            op = 1;
-        }
-        });
-    })
-    .catch((error) => {
-        console.log("Error getting documents: ", error);
-    });
-})
 
-
-
-//Funcion para imprimir la informacion
-/*const getIntegrantes = () => db.collection('clientes').get();
-const getIntegrante = (id) => db.collection('clientes').doc(id).get();
-const onGetIntegrantes = (callback) => db.collection('clientes').onSnapshot(callback);
-const deleteIntegrante = (id) => db.collection('clientes').doc(id).delete();
-const editIntegrante = (id) => db.collection('clientes').doc(id).get();
-const updateIntegrante = (id, updatedIntegrante) => db.collection('clientes').doc(id).update(updatedIntegrante);
-*/
-/*function login() {
-    window.addEventListener('DOMContentLoaded', async (e) => {
-
-        onGetIntegrantes((querySnapshot) => {
-            //Imprimimos los datos guardados en FireBase en la consola
-            querySnapshot.forEach(doc => {
-
-                const integranteDato = doc.data();
-                integranteDato.id = doc.id;
-                if (email == integranteDato.emailCliente) {
-                    window.location = "./index.html";
-                } else {
-                    window.location = "./registro.html";
-                }
+form.addEventListener('input', async (e) => {
+    db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
+        .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                idCliente = doc.id;
+                console.log(idCliente);
+                sessionStorage.setItem('estadoCuenta', true);
+                estadoCuentaf = sessionStorage.getItem('estadoCuenta');
+                console.log(estadoCuentaf/*sessionStorage.getItem('estadoCuenta')*/);
             })
-        });
-    });
-}*/
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+});
+
+document.getElementById('loginBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    login();
+});
+
+function login() {
+
+    if (estadoCuentaf == 'true') {
+        document.getElementById('login_header').innerHTML = "Cerrar Sesión";
+        sessionStorage.setItem('idCliente', idCliente);
+        window.location = './catalogo.html';
+    } else {
+        console.log("datos de ingreso incorrectos");
+    }
+
+}
+
+/*document.getElementById('login_header').addEventListener('click', async (estadoCuenta) => {
+    e.preventDefault();
+    if (estadoCuenta == false) {
+        document.getElementById('login_header').innerHTML = "iniciar sesión/registrarse";
+        window.location = './login.html'
+        return idCliente;
+    } else {
+        document.getElementById('login_header').innerHTML = "Cerrar Sesión";
+        estadoCuenta = false;
+    }
+})*/

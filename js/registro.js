@@ -1,12 +1,39 @@
 const db = firebase.firestore();
-
 const taskForm = document.getElementById('form_registro');
 
-let editStatus = false;
-let id = '';
+//import {logout} from 'login';
+//variables para verificar registro
+var correoRegistrado = false;
+var boletaRegistrado = false;
+//variables datos cliente
+var nombreCliente;
+var apCliente;
+var amCliente;
+var boletaCliente;
+var emailCliente;
+var passwordCliente;
+var password2;
+var escuelaCliente;
+var telCliente;
+var ineCliente;
+var tipoCliente = false;
+var direcciones = [calle, numeroExterior, numeroInterior, colonia, alcaldia, CP, referencias];
+var direccion;
+//variables direccion cliente
+var calle;
+var numeroExterior;
+var numeroInterior;
+var colonia;
+var alcaldia;
+var CP;
+var referencias;
+/*const checkDireccion = document.getElementById('checkDireccion');*/
+let idDireccion;
 
-//Funcion para guardar la informacion en la base de datos
-const saveClientes = (nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente) =>
+//addEventListener('DOMContentLoaded', logout());
+
+//Funcion para guardar los clientes
+const saveClientes = (nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente, tipoCliente/*, ineCliente, direcciones*/) =>
     //Creará la coleccion de la base de datos en Firebase
     //aquí se pondrá el nombre de cada entidad(si no existe, Firebase la creará en automático)
     db.collection('clientes').doc().set({
@@ -17,51 +44,97 @@ const saveClientes = (nombreCliente, apCliente, amCliente, boletaCliente, emailC
         emailCliente,
         passwordCliente,
         escuelaCliente,
-        telCliente
+        telCliente,
+        tipoCliente/*,
+        ineCliente,
+        direcciones*/
     })
-//Funcion para imprimir la informacion
-const getClientes = () => db.collection('clientes').get();
-const getCliente = (id) => db.collection('clientes').doc(id).get();
-const onGetIClientes = (callback) => db.collection('clientes').onSnapshot(callback);
-const deleteCliente = (id) => db.collection('clientes').doc(id).delete();
-const editCliente = (id) => db.collection('clientes').doc(id).get();
-const updateCliente = (id, updatedCliente) => db.collection('clientes').doc(id).update(updatedCliente);
 
-//Imprimir
-
-//Estructura de la informacion que se guardará a la base de datos
 taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    // Nombre de variable = nombre de la variable que guarda el id del div a editar['Nombre del id especifico a editar'].value;
-    const nombreCliente = taskForm['llenar_nombre_cliente'].value;
-    const apCliente = taskForm['llenar_a_paterno_cliente'].value;
-    const amCliente = taskForm['llenar_a_materno_cliente'].value;
-    const boletaCliente = taskForm['llenar_boleta_cliente'].value;
-    const emailCliente = taskForm['llenar_email_cliente'].value;
-    const passwordCliente = taskForm['llenar_password_cliente'].value;
-    const escuelaCliente = taskForm['llenar_escuela_cliente'].value;
-    const telCliente = taskForm['llenar_telefono_cliente'].value;
-    await saveClientes(nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente);
-    console.log("enviado")
-    if (!editStatus) {
-    
+    if (passwordCliente == password2) {
+        if (correoRegistrado == true) {
+            alert("el correo ya esta registrado");
+            correoRegistrado = false;
+            return;
+        } if (boletaRegistrado == true) {
+            alert("la boleta ya esta registrado")
+            boletaRegistrado = false;
+            return;
+        } if (correoRegistrado == false && boletaRegistrado == false) {
+            console.log("correo electronico");
+            password2 = taskForm['llenar_confirmar_password_cliente'].value;
+            nombreCliente = taskForm['llenar_nombre_cliente'].value.toUpperCase();
+            apCliente = taskForm['llenar_a_paterno_cliente'].value.toUpperCase();
+            amCliente = taskForm['llenar_a_materno_cliente'].value.toUpperCase();
+            boletaCliente = Number(taskForm['llenar_boleta_cliente'].value);
+            emailCliente = taskForm['llenar_email_cliente'].value.toLowerCase();
+            passwordCliente = taskForm['llenar_password_cliente'].value;
+            escuelaCliente = taskForm['llenar_escuela_cliente'].value;
+            telCliente = Number(taskForm['llenar_telefono_cliente'].value);
+            console.log(nombreCliente);
+            await saveClientes(nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente, tipoCliente/*, direcciones*/);
+            alert("registro exitoso")
+            document.getElementById('form_registro').submit();
+            window.location = './login.html';
+        }
     } else {
-
-        await updateCliente(id, {
-            nombreCliente,
-            apCliente,
-            amCliente,
-            boletaCliente,
-            emailCliente,
-            passwordCliente,
-            escuelaCliente,
-            telCliente
-        });
-        editStatus = false;
-
-        //Boton de Guardar info (No tocar)
-        taskForm['registrar'].innerText = 'Guardar';
-
+        alert("Las contraseñas no coinciden");
+        return;
     }
+});
 
-})
+
+taskForm.addEventListener('input', async (e) => {
+    db.collection("clientes").where("emailCliente", "==", document.getElementById('llenar_email_cliente').value)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                correoRegistrado = true;
+            })
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+
+    db.collection("clientes").where("boletaCliente", "==", document.getElementById('llenar_boleta_cliente').value)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                boletaRegistrado = true;
+                console.log("boleta estado" + boletaRegistrado);
+            })
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+});
+
+
+/*const saveDireccion = (calle, numeroExterior, numeroInterior, colonia, alcaldia, CP, referencias) =>
+    //Creará la coleccion de la base de datos en Firebase
+    //aquí se pondrá el nombre de cada entidad(si no existe, Firebase la creará en automático)
+    db.collection('direcciones').doc().set({
+        calle,
+        numeroExterior,
+        numeroInterior,
+        colonia,
+        alcaldia,
+        CP,
+        referencias
+    });*/
+
+
+//funcion para guardar una direccion
+/*taskForm.addEventListener('input', async (e) => {
+    e.preventDefault();
+    // Nombre de variable = nombre de la variable que guarda el id del div a editar['Nombre del id especifico a editar'].value;
+    calle = taskForm['calle'].value;
+    numeroExterior = taskForm['numExt'].value;
+    numeroInterior = taskForm['numInt'].value;
+    colonia = taskForm['colonia'].value;
+    alcaldia = taskForm['alcaldia'].value;
+    CP = taskForm['cp'].value;
+    referencias = taskForm['referencias'].value;
+    direccion = [calle, numeroExterior, numeroInterior, colonia, alcaldia, CP, referencias];
+})*/
