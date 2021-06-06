@@ -82,3 +82,13 @@ function showMetodoEntregaDireccion() {
     element.style.display = 'none';
     element1.style.display = 'block';
 }
+
+function showQuieroVender() {
+    element = document.getElementById("opcionesQuieroVender");
+    check = document.getElementById("checkVendedorRegistro");
+    if (check.checked) {
+        element.style.display = 'block';
+    } else {
+        element.style.display = 'none';
+    }
+}
