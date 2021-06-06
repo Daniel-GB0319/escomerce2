@@ -96,7 +96,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="products">
-                                <div class="row g-0">
+                                <div id="imp-catalogo" class="row g-0">
                                     <div class="col-12 col-md-6 col-lg-4">
                                         <div class="clean-product-item">
                                             <div class="product-name"><a href="#">Titulo producto</a></div>
@@ -111,7 +111,8 @@
                                                     <h3>$100</h3>
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-around product-name" style="margin-top: 30px;"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Ver</button><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Comprar</button></div>
+                                    
+                                            <div class="d-flex justify-content-around product-name" style="margin-top: 30px;"><a href="descripcionProducto.html"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);"> Ver </button></a><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Comprar</button></div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-4">
@@ -252,8 +253,9 @@
         var defaultStorage = firebase.storage();
 
     </script>
+    <script src="./js/nabvar.js"></script>
     <script src="./js/catalogo.js"></script>
-    <script src="./js/buscador.js"></script>
+    <!--<script src="./js/buscador.js"></script>-->
     <script src="assets/bootstrap/js/bootstrap.min.js "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js "></script>
     <script src="assets/js/vanilla-zoom.js "></script>
