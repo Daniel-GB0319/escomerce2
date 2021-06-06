@@ -1,7 +1,7 @@
 const db = firebase.firestore();
 const taskForm = document.getElementById('form_registro');
 
-import {logout} from 'login';
+//import {logout} from 'login';
 //variables para verificar registro
 var correoRegistrado = false;
 var boletaRegistrado = false;
@@ -30,7 +30,7 @@ var referencias;
 /*const checkDireccion = document.getElementById('checkDireccion');*/
 let idDireccion;
 
-addEventListener('DOMContentLoaded', logout());
+//addEventListener('DOMContentLoaded', logout());
 
 //Funcion para guardar los clientes
 const saveClientes = (nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente, tipoCliente/*, ineCliente, direcciones*/) =>
