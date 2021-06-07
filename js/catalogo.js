@@ -2,7 +2,7 @@ const db = firebase.firestore();
 
 const taskForm = document.getElementById('imp-catalogo');
 const taskContainer = document.getElementById('imp-catalogo');
-
+const numCarrito = document.getElementById('navcol-1');
 
 let carritoOn = false;
 let editStatus = false;
@@ -36,7 +36,7 @@ const updateIntegrante = (id, updatedIntegrante) => db.collection('producto').do
 //Pagina ver producto
 const onGetVerIdProducto = (callback) => db.collection('ver_Producto').onSnapshot(callback);
 const onGetProductos = (id) => db.collection('producto').doc(id).get();
-
+const getCarrito = (callback) => db.collection('carrito').onSnapshot(callback)
 
 
 const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({ idProducto, datosProducto, precioProducto });
@@ -45,6 +45,7 @@ const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collect
 window.addEventListener('DOMContentLoaded', async (e) => {
 
     onGetIntegrantes((querySnapshot) => {
+        
         //Borra el contenido anterior dentro del div
         taskContainer.innerHTML = '';
         const datosProducto = [];
@@ -60,7 +61,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 '<div class="product-name"><a>' + infoDato.desc_prod + ' ID:' + infoDato.id + '</a></div><div class="product-name"></div><div class="about"><div class="d-none rating"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg"><img src="assets/img/star-empty.svg"></div>' +
                 '<div class="price"><h3>$' + infoDato.prec_prod + '</h3></div>' +
                 '</div><div class="d-flex justify-content-around product-name" style="margin-top: 30px;">' +
-                '<button data-id="' + infoDato.id + '" class="btn btn-primary btn-desc" type="button" style="background: rgb(13,136,208);">Ver</button><button data-id="' + infoDato.id + '"class="btn btn-primary btn-add" type="button" style="background: rgb(13,136,208);">Comprar</button></div></div></div>';
+                '<button data-id="' + infoDato.id + '" class="btn btn-primary btn-desc" type="button" style="background: rgb(13,136,208);">Ver</button><button data-id="' + infoDato.id + '"class="btn btn-primary btn-add" type="button" style="background: rgb(13,136,208);">Añadir Carrito</button></div></div></div>';
 
             const btnDelete = document.querySelectorAll('.btn-delete');
             //console.log(btnDelete)
@@ -78,7 +79,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 btn.addEventListener('click', async (e) => {
                     const doc = await getProducto(e.target.dataset.id);
                     const datoActualizar = doc.data();
-                    console.log(e.target.dataset.id)
+                    //console.log(e.target.dataset.id)
                     const idProducto = e.target.dataset.id
                     var cant_prod_car = 1;
                     datoActualizar.id = doc.id;
@@ -149,9 +150,32 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     taskForm['subir_registro'].innerText = 'Update';
                 })
             })
-            console.log(infoDato.id)
+            //console.log(infoDato.id)
         })
 
+    })
+    getCarrito((querySnapshot) => {
+        numCarrito.innerHTML = ''
+        querySnapshot.forEach(doc => {
+            cantidadCarrito = doc.data()
+            cantidadCarrito
+            console.log(cantidadCarrito.infoProducto.length)
+            numCarrito.innerHTML = `
+            <ul class="navbar-nav d-flex align-items-center align-content-center ms-auto">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link active" href="catalogo.html">catalogo</a></li>
+                    <li class="nav-item d-flex flex-row-reverse"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);border-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-top-left-radius: 10px;font-family: Montserrat, sans-serif;"
+                            onclick="verCarrito()"><span>${cantidadCarrito.infoProducto.length}</span><i class="fa fa-shopping-cart" style="margin-left: 10px;"></i></button></li>
+                    <li class="nav-item d-flex flex-row-reverse">
+                        <div class="d-flex flex-column-reverse">
+                            <div>
+                                <div class="input-group"><input class="form-control" type="text" style="border-color: RGB(13,136,208);border-top-left-radius: 10px;border-bottom-left-radius: 10px;width: 190px;"><button class="btn btn-primary" type="button" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: rgb(13,136,208);"><i class="fa fa-search" style="width: 80%;"></i></button></div>
+                            </div>
+                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a id="login_header" href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
+                        </div>
+                    </li>
+                </ul>`
+        })
     })
 
 });
@@ -190,7 +214,7 @@ taskForm.addEventListener('submit', async (e) => {
         taskForm['subir_registro'].innerText = 'Guardar';
 
     }
-    console.log(id)
+    //console.log(id)
     getIntegrantes();
     taskForm.reset();
     //console.log(url_foto, nombre_integrante);
