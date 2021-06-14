@@ -5,9 +5,55 @@ let op = false;
 var idCliente;
 var email;
 var password;
-var estadoCuentaf;
+sessionStorage.setItem('estadoCuenta',false);
 /*const taskForm = document.getElementById('form_login');*/
 
+form.addEventListener('change', async (e) => {
+    db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
+        .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                idCliente = doc.id;
+                console.log('hola');
+                sessionStorage.setItem('estadoCuenta', true);
+                console.log(sessionStorage.getItem('estadoCuenta'));
+            })
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+        sessionStorage.setItem('estadoCuenta', false);
+        console.log(sessionStorage.getItem('estadoCuenta'));
+});
+
+document.getElementById('loginBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    login();
+});
+form.addEventListener('click', async (e) => {
+    db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
+        .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                idCliente = doc.id;
+                console.log('hola');
+                sessionStorage.setItem('estadoCuenta', true);
+                console.log(sessionStorage.getItem('estadoCuenta'));
+            })
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+        sessionStorage.setItem('estadoCuenta', false);
+        console.log(sessionStorage.getItem('estadoCuenta'));
+});
+
+document.getElementById('loginBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    login();
+});
 form.addEventListener('input', async (e) => {
     db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
         .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
@@ -15,15 +61,16 @@ form.addEventListener('input', async (e) => {
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 idCliente = doc.id;
-                console.log(idCliente);
+                console.log('hola');
                 sessionStorage.setItem('estadoCuenta', true);
-                estadoCuentaf = sessionStorage.getItem('estadoCuenta');
-                console.log(estadoCuentaf/*sessionStorage.getItem('estadoCuenta')*/);
+                console.log(sessionStorage.getItem('estadoCuenta'));
             })
         })
         .catch((error) => {
             console.log("Error getting documents: ", error);
         })
+        sessionStorage.setItem('estadoCuenta', false);
+        console.log(sessionStorage.getItem('estadoCuenta'));
 });
 
 document.getElementById('loginBtn').addEventListener('click', async (e) => {
@@ -31,14 +78,15 @@ document.getElementById('loginBtn').addEventListener('click', async (e) => {
     login();
 });
 
-function login() {
+async function login() {
 
-    if (estadoCuentaf == 'true') {
-        document.getElementById('login_header').innerHTML = "Cerrar Sesión";
+    if (sessionStorage.getItem('estadoCuenta') == 'true') {
         sessionStorage.setItem('idCliente', idCliente);
-        window.location = './catalogo.html';
+        mensajeDeExito('Inicio de sesion exitoso', './catalogo.html');
+        
     } else {
-        console.log("datos de ingreso incorrectos");
+       mensajeAdvertencia( 'Los datos que ingreso son incorrectos' );
+       return;
     }
 
 }
