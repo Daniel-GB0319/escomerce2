@@ -119,6 +119,35 @@ taskForm.addEventListener('submit', async (e) => {
     getMetodoPagos();
     taskForm.reset();
 
-
+   
     //console.log(url_foto, nombre_integrante);
 })
+
+function showMetodoCash(){
+    element = document.getElementById("divPagoCard");
+    element1 = document.getElementById("divPagoCash");
+    element.style.display = 'none';
+    element1.style.display = 'block';
+}
+
+function showMetodoCard(){
+    element = document.getElementById("divPagoCard");
+    element1 = document.getElementById("divPagoCash");
+    if(tarjetaCredito == true){
+        element.style.display = 'block';
+        element1.style.display = 'none';
+    } if(tarjetaCredito == false) {
+        element.style.display = 'none';
+        element1.style.display = 'block';
+    } 
+}
+
+document.getElementById("payCard").addEventListener('click',async(e)=>{
+    efectivo = false;
+    tarjetaCredito= true; 
+    showMetodoCard()});
+
+document.getElementById("payCash").addEventListener('click',async(e)=>{
+    efectivo = true;
+    tarjetaCredito= false;
+    showMetodoCard()});

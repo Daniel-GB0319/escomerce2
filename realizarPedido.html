@@ -140,12 +140,12 @@
                             <h3 class="title">Seleccionar método de pago</h3>
                             <div class="d-flex justify-content-around align-self-center"
                                 style="width: 80%;margin-bottom: 40px;"><button
-                                    class="btn btn-primary d-flex align-self-center" type="button"
+                                    class="btn btn-primary d-flex align-self-center" type="button" id="payCard" onclick="showMetodoCard()"
                                     style="background: rgb(13,136,208);">Tarjeta de crédito/débito</button><button
-                                    class="btn btn-primary d-flex align-self-center" type="button"
+                                    class="btn btn-primary d-flex align-self-center" type="button" id="payCash" onclick="showMetodoCash()"
                                     style="background: rgb(13,136,208);">Efectivo</button></div>
                         </div>
-                        <div class="d-flex flex-column card-details">
+                        <div class=" flex-column card-details" id="divPagoCash" style="display:none;">
                             <h3 class="title">Pago en efectivo</h3><span>Se va a generar un archivo con una linea de
                                 captura para que puedas realizar el pago en tu tienda OXXO más cercana.<br></span>
                             <div class="d-flex justify-content-around align-self-center"
@@ -154,7 +154,7 @@
                                     style="background: rgb(13,136,208);">Proceder al pago.</button></div>
                         </div>
                         <div style="width: 80%;"></div>
-                        <div class="d-flex flex-column card-details">
+                        <div class=" flex-column card-details" id="divPagoCard" style="display:none;">
                             <h3 class="title">Detalles de la tarjeta</h3>
                             <div class="row">
                                 <div class="col-sm-7">
@@ -233,7 +233,7 @@
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
-
+    <script src="./assets/js/main.js"></script>
     <script src="assets/js/Simple-Slider.js"></script>
 </body>
 
