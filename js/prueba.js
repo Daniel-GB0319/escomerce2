@@ -7,7 +7,9 @@ const numCarrito = document.getElementById('navcol-1');
 let carritoOn = false;
 let editStatus = false;
 let id = '';
-let idCliente = 'fkGyA6cAf53siIWITwQC';
+let idCliente = sessionStorage.getItem('idCliente');
+var existeCarrito = false;
+
 let idCarritoComprar = idCliente +'1';
 const datosProducto = [];
 //Funcion para guardar la informacion en la base de datos
@@ -28,7 +30,7 @@ const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod
 //Funcion para imprimir la informacion
 const getIntegrantes = () => db.collection('producto').get();
 const getProducto = (id) => db.collection('producto').doc(id).get();
-const addCarrito = (idCarritoProd,idCliente,infoProducto) => db.collection('prueba').doc(idCarritoProd).set({idCliente,infoProducto });
+const addCarrito = (idCarritoProd,idCliente,infoProducto) => db.collection('carrito').doc(idCarritoProd).set({idCliente,infoProducto });
 const onGetIntegrantes = (callback) => db.collection('producto').onSnapshot(callback);
 const deleteIntegrante = (id) => db.collection('producto').doc(id).delete();
 const editIntegrante = (id) => db.collection('producto').doc(id).get();
@@ -37,7 +39,7 @@ const updateIntegrante = (id, updatedIntegrante) => db.collection('producto').do
 //Pagina ver producto
 const onGetVerIdProducto = (callback) => db.collection('ver_Producto').onSnapshot(callback);
 const onGetProductos = (id) => db.collection('producto').doc(id).get();
-const getCarrito = (callback) => db.collection('prueba').onSnapshot(callback)
+const getCarrito = (callback) => db.collection('carrito').onSnapshot(callback)
 
 
 const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collection('ver_Producto').doc().set({ idProducto, datosProducto, precioProducto });
@@ -76,7 +78,6 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             const btnAdd = document.querySelectorAll('.btn-add');
 
             btnAdd.forEach(btn => {
-
                 btn.addEventListener('click', async (e) => {
                     const doc = await getProducto(e.target.dataset.id);
                     const datoActualizar = doc.data();
@@ -84,7 +85,79 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     const idProducto = e.target.dataset.id
                     var cant_prod_car = 1;
                     datoActualizar.id = doc.id;
+                    console.log(datoActualizar.id)
+                    console.log(idCliente)
                     
+                    
+                    function carritoActualizar() {
+                        if(existeCarrito == true){}
+                    }
+                    //SI EXISTE EL CARRITO
+                    db.collection('carrito').where("idCliente","==", idCliente).get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            consultCarrito = doc.data();
+                            console.log(consultCarrito.infoProducto)
+                            const encontrarDato = consultCarrito.infoProducto.find(item => {
+                                return item.id_prod === e.target.dataset.id;
+                            })
+                            const indexModificar = consultCarrito.infoProducto.findIndex(item => {
+                                return item.id_prod === e.target.dataset.id;
+                            })
+
+                            //ACTUALIZAR CANTIDAD PROUDUCTO
+
+                            if(!encontrarDato) {
+                                //Si No existe el producto, lo agrega al final
+                                console.log("NUEVO PRODUCTO:")
+                                consultCarrito.infoProducto.push({
+                                    nombre_prod : datoActualizar.nombre_prod,
+                                    desc_prod : datoActualizar.desc_prod,
+                                    cant_prod : datoActualizar.cant_prod,
+                                    prec_prod : datoActualizar.prec_prod,
+                                    cond_prod : datoActualizar.cond_prod,
+                                    url_prod : datoActualizar.url_prod,
+                                    calif_prod : datoActualizar.calif_prod,
+                                    cat_prod : datoActualizar.cat_prod,
+                                    id_prod : idProducto,
+                                    cant_prod_car: cant_prod_car
+                                })
+                                addCarrito(idCarritoComprar,idCliente,consultCarrito.infoProducto)
+
+                            } else {
+                                //Si existe el producto actualiza la cantidad
+                                //Valida que el contador no sobre pase el stock
+                            if(encontrarDato.cant_prod_car < encontrarDato.cant_prod){
+                                encontrarDato.cant_prod_car += 1;
+                            }
+                            console.log("Nueva cantidad: "+encontrarDato.cant_prod_car);
+                            const datosProducto = {
+                                nombre_prod: encontrarDato.nombre_prod,
+                                desc_prod: encontrarDato.desc_prod,
+                                cant_prod: encontrarDato.cant_prod,
+                                prec_prod: encontrarDato.prec_prod,
+                                cond_prod: encontrarDato.cond_prod,
+                                url_prod: encontrarDato.url_prod,
+                                calif_prod: encontrarDato.calif_prod,
+                                cat_prod: encontrarDato.cat_prod,
+                                id_prod: encontrarDato.id_prod,
+                                cant_prod_car: encontrarDato.cant_prod_car
+                            }
+                            console.log("Nuevo:")
+                            console.log(datosProducto) 
+                            consultCarrito.infoProducto.splice(indexModificar, 1, datosProducto);
+                            addCarrito(idCarritoComprar,idCliente,consultCarrito.infoProducto)
+                            }
+                        })
+                    })
+                    .catch((error) => {
+                        console.log("Error getting documents: ", error);
+                    })
+                    
+                    
+                    /*
+                     
+                    db.collection('carrito').where("idCliente","",)
                     datosProducto.push({
                         nombre_prod : datoActualizar.nombre_prod,
                         desc_prod : datoActualizar.desc_prod,
@@ -98,8 +171,8 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                         cant_prod_car: cant_prod_car
                     })
                     const datosCarrito = datosProducto
-                    
-                    await addCarrito(idCarritoComprar,idCliente,datosCarrito);
+                    */
+                    //await addCarrito(idCarritoComprar,idCliente,datosCarrito);
                 })
             })
 
