@@ -1,6 +1,6 @@
-const db = firebase.firestore();
+//const db = firebase.firestore();
 
-const taskForm = document.getElementById('form_metodoPago');
+
 //const taskContainer = document.getElementById('printMetodoPagos');
 
 let editStatus = false;
@@ -26,6 +26,7 @@ const deleteMetodoPago = (id) => db.collection('metodoPago').doc(id).delete();
 const editMetodoPago = (id) => db.collection('metodoPago').doc(id).get();
 const updateMetodoPago = (id, updatedMetodoPago) => db.collection('metodoPago').doc(id).update(updatedMetodoPago);
 
+
 //Imprimir
 window.addEventListener('DOMContentLoaded', async (e) => {
 
@@ -33,6 +34,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         //Borra el contenido anterior dentro del div
        // taskContainer.innerHTML = '';
         //Imprimimos los datos guardados en FireBase en la consola
+        
         querySnapshot.forEach(doc => {
           
             const MetodoPagoDato = doc.data()
@@ -117,6 +119,35 @@ taskForm.addEventListener('submit', async (e) => {
     getMetodoPagos();
     taskForm.reset();
 
-
+   
     //console.log(url_foto, nombre_integrante);
 })
+
+function showMetodoCash(){
+    element = document.getElementById("divPagoCard");
+    element1 = document.getElementById("divPagoCash");
+    element.style.display = 'none';
+    element1.style.display = 'block';
+}
+
+function showMetodoCard(){
+    element = document.getElementById("divPagoCard");
+    element1 = document.getElementById("divPagoCash");
+    if(tarjetaCredito == true){
+        element.style.display = 'block';
+        element1.style.display = 'none';
+    } if(tarjetaCredito == false) {
+        element.style.display = 'none';
+        element1.style.display = 'block';
+    } 
+}
+
+document.getElementById("payCard").addEventListener('click',async(e)=>{
+    efectivo = false;
+    tarjetaCredito= true; 
+    showMetodoCard()});
+
+document.getElementById("payCash").addEventListener('click',async(e)=>{
+    efectivo = true;
+    tarjetaCredito= false;
+    showMetodoCard()});

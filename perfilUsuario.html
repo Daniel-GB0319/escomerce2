@@ -32,7 +32,7 @@
                             <div>
                                 <div class="input-group"><input class="form-control" type="text" style="border-color: RGB(13,136,208);border-top-left-radius: 10px;border-bottom-left-radius: 10px;width: 190px;"><button class="btn btn-primary" type="button" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: rgb(13,136,208);"><i class="fa fa-search" style="width: 80%;"></i></button></div>
                             </div>
-                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
+                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a id="login_header" href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
                         </div>
                     </li>
                 </ul>
@@ -80,26 +80,47 @@
                                         <div class="d-flex justify-content-center" style="width: 40px;"><i class="fa fa-caret-square-o-down align-self-center"></i></div>
                                     </div>
                                     <div>
-                                        <form>
-                                            <div class="mb-3"><label class="form-label" for="name">Nombre</label><input class="form-control item" type="text" id="name" placeholder="Nombre(s)" required="true"></div>
-                                            <div class="mb-3"><label class="form-label" for="password">Apellidos</label><input class="form-control" type="text" placeholder="A. Paterno" required="true"><input class="form-control" type="text" placeholder="A. Materno" required="true"
-                                                    style="margin-top: 10px;"></div>
-                                            <div class="mb-3"><label class="form-label" for="email">Boleta</label><input class="form-control" type="number" placeholder="No. Boleta o de empleado" min="2" max="19999999999999"></div>
-                                            <div class="mb-3"><label class="form-label" for="email">Correo</label><input class="form-control" type="email" placeholder="Correo institucional" required="true"></div>
-                                            <div class="mb-3"><label class="form-label" for="email">Contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
-                                            <div class="mb-3"><label class="form-label" for="email">Repite la contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
-                                            <div class="mb-3"><label class="form-label" for="email">Escuela</label><select class="form-select" required="true">
+                                        <form id="form_registro">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="name">Nombre</label><input class="form-control item" type="text" id="nombre_usa12" placeholder="Nombre(s)" required="true"></div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="password">Apellidos</label>
+                                                <input class="form-control" id="a_paterno12" type="text" placeholder="A. Paterno" required="true">
+                                                <input class="form-control" id="a_materno12" type="text" placeholder="A. Materno" required="true" style="margin-top: 10px;"></div>
+                                            <div class="mb-3" id="no_boleta_empleado12">
+                                                <label class="form-label" for="email">Boleta</label><input class="form-control" type="number" placeholder="No. Boleta o de empleado" min="2" max="19999999999999"></div>
+                                            <div class="mb-3" id="correo_cuenta12">
+                                                <label class="form-label" for="email">Correo</label><input class="form-control" type="email" placeholder="Correo institucional" required="true"></div>
+                                            <div class="mb-3" id="contraseña_cuenta12">
+                                                <label class="form-label" for="email">Contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
+                                            <div class="mb-3" id="contraseña_cuenta42">
+                                                <label class="form-label" for="email">Repite la contraseña</label><input class="form-control" type="password" placeholder="Contraseña de 8 a 16 caracteres" required="true"></div>
+                                            <div class="mb-3" id="escuela_procedencia12">
+                                                <label class="form-label" for="email">Escuela</label>
+                                                <select class="form-select" required="true">
                                                     <option value="12" selected="">Escuela de procedencia</option>
                                                     <option value="13">ESCOM</option>
                                                     <option value="14">ESIME Z</option>
                                                 </select></div>
-                                            <div class="mb-3"><label class="form-label" for="email">Teléfono</label><input class="form-control" type="tel" placeholder="10 dígitos (opcional)"></div>
                                             <div class="mb-3">
-                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="checkVendedorRegistro"><label class="form-check-label" for="formCheck-1">Quiero ser vendedor</label></div>
+                                                <label class="form-label" for="email">Teléfono</label>
+                                                <input class="form-control" id="telefono_10dig12" type="tel" placeholder="10 dígitos (opcional)"></div>
+                                            <div class="mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="vendedor12" type="checkbox">
+                                                    <label class="form-check-label" for="formCheck-1">Quiero ser vendedor</label>
+                                                </div>
                                             </div>
-                                            <div class="d-block mb-3" id="divINERegistro"><label class="form-label" for="email">INE</label><input class="form-control" type="file"></div>
-                                            <div class="d-block mb-3" id="divCLABERegistro"><label class="form-label" for="email">Cuenta CLABE</label><input class="form-control" type="text" placeholder="No. cuenta CLABE"></div><button class="btn btn-primary" type="submit" style="background: rgb(52, 73, 94);border-color: rgb(52, 73, 94);border-top-color: rgb(52,;border-right-color: 73,;border-bottom-color: 94);border-left-color: 73,;"
-                                                onclick="inicio()">Actualizar datos</button>
+                                            <div class="d-block mb-3">
+                                                <label class="form-label" for="email">INE</label>
+                                                <input class="form-control" id="ine12" type="file">
+                                            </div>
+                                            <div class="d-block mb-3">
+                                                <label class="form-label" for="email">Cuenta CLABE</label>
+                                                <input class="form-control" id="cuenta_clabe12" type="text" placeholder="No. cuenta CLABE">
+                                            </div>
+                                            <button class="btn btn-primary" id="actualizar_datos" type="submit" style="background: rgb(52, 73, 94);border-color: rgb(52, 73, 94);border-top-color: rgb(52,border-right-color 73,border-bottom-color 94);border-left-color: 73,;"
+                                            onclick="inicio()">Actualizar datos</button>>
                                         </form>
                                     </div>
                                 </div>
@@ -111,10 +132,10 @@
                                                     <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/subirImagen.png"></div>
                                                 </div>
                                                 <div class="col-md-5 product-info">
-                                                    <div><span>Fecha de llegada:&nbsp;</span><span class="value">Fecha</span></div><a class="product-name" href="#" style="color: rgb(13,136,208);">Producto 1</a>
+                                                    <div><span>Fecha de Compra:&nbsp;</span><br><span class="value">Fecha de llegada: </span></div><a class="product-name" href="#" style="color: rgb(13,136,208);">Producto 1</a>
                                                     <div class="product-specs">
-                                                        <div><span>Detalles:&nbsp;</span><span class="value">Detalles de la compra</span></div>
-                                                        <div><span>Vendedor:&nbsp;</span><span class="value">Nombre del vendedor</span></div>
+                                                        <div><span>Detalles:&nbsp;</span><span class="value"></span></div><a href="#" class="product-name">Direccion de Envio</a><br><a href="#" class="product-name">Metodo de Pago</a>
+                                                        <div><span>Vendedor:&nbsp;</span></div>
                                                         <div><span>Estado de la entrega:&nbsp;</span><span class="value">Status</span></div>
                                                         <div><span>Precio por unidad:&nbsp;</span><span class="value">Precio por unidad</span></div>
                                                         <div></div>
@@ -125,44 +146,7 @@
                                                 <div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Total de la compra</label><span>$120</span></div>
                                                 <div class="col"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Volver a comprar</button></div>
                                             </div>
-                                            <div class="row justify-content-center align-items-center">
-                                                <div class="col-md-3">
-                                                    <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/subirImagen.png"></div>
-                                                </div>
-                                                <div class="col-md-5 product-info">
-                                                    <div><span>Fecha de llegada:&nbsp;</span><span class="value">Fecha</span></div><a class="product-name" href="#" style="color: rgb(13,136,208);">Producto 2</a>
-                                                    <div class="product-specs">
-                                                        <div><span>Detalles:&nbsp;</span><span class="value">Detalles de la compra</span></div>
-                                                        <div><span>Vendedor:&nbsp;</span><span class="value">Nombre del vendedor</span></div>
-                                                        <div><span>Estado de la entrega:&nbsp;</span><span class="value">Status</span></div>
-                                                        <div><span>Precio por unidad:&nbsp;</span><span class="value">Precio por unidad</span></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Total de la compra</label><span>$120</span></div>
-                                                <div class="col"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Volver a comprar</button></div>
-                                            </div>
-                                            <div class="row justify-content-center align-items-center">
-                                                <div class="col-md-3">
-                                                    <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/subirImagen.png"></div>
-                                                </div>
-                                                <div class="col-md-5 product-info">
-                                                    <div><span>Fecha de llegada:&nbsp;</span><span class="value">Fecha</span></div><a class="product-name" href="#" style="color: rgb(13,136,208);">Producto 3</a>
-                                                    <div class="product-specs">
-                                                        <div><span>Detalles:&nbsp;</span><span class="value">Detalles de la compra</span></div>
-                                                        <div><span>Vendedor:&nbsp;</span><span class="value">Nombre del vendedor</span></div>
-                                                        <div><span>Estado de la entrega:&nbsp;</span><span class="value">Status</span></div>
-                                                        <div><span>Precio por unidad:&nbsp;</span><span class="value">Precio por unidad</span></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Total de la compra</label><span>$120</span></div>
-                                                <div class="col"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Volver a comprar</button></div>
-                                            </div>
+
                                         </div>
                                         <div class="product"></div>
                                         <div class="product"></div>
@@ -446,10 +430,20 @@
                                                     <h4 class="modal-title">Editar dirección</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <div class="d-flex flex-column justify-content-evenly" style="height: 40vh;"><input type="text" placeholder="Calle"><input type="text" placeholder="No. Interior"><input type="text" placeholder="No. Exterior (opcional)"><input type="text" placeholder="Colonia"><input type="text"
-                                                            placeholder="Alcaldia-Municipio"><input type="text" placeholder="C.P."></div><textarea placeholder="Referencias (No. telefónico, color de la puerta, etc.)"></textarea>
+                                                    <div class="d-flex flex-column justify-content-evenly" style="height: 40vh;">
+                                                        <form action="./index.html" id="form_direcciones">
+                                                            <input type="text" id="calle12" placeholder="Calle">
+                                                            <input type="text" id="no_interior12" placeholder="No. Interior">
+                                                            <input type="text" id="no_exterior12" placeholder="No. Exterior (opcional)">
+                                                            <input type="text" id="colonia12" placeholder="Colonia">
+                                                            <input type="text" id="alcaldia12" placeholder="Alcaldia-Municipio">
+                                                            <input type="text" id="cp12" placeholder="C.P.">
+                                                            <button id="Guardar12">Guardar</button>hola
+                                                        </form>
+                                                    </div>
+                                                        <textarea placeholder="Referencias (No. telefónico, color de la puerta, etc.)"></textarea>
                                                 </div>
-                                                <div class="modal-footer"><button class="btn btn-primary" type="submit">Guardar</button><button class="btn btn-light" type="button" data-bs-dismiss="modal" data-bs-target="#modalDieccion">Cerrar</button></div>
+                                                <!--div class="modal-footer"><button class="btn btn-primary" id="Guardar12" type="submit">Guardar</button><button class="btn btn-light" type="button" data-bs-dismiss="modal" data-bs-target="#modalDieccion">Cerrar</button></div-->
                                             </div>
                                         </div>
                                     </div>
@@ -497,6 +491,9 @@
 </script>
 
 <script src="./js/perfilUsuario.js"></script>
+               <script src="js/consultPedido.js"></script>
+ <script src="./js/perfil_usuario.js"></script>
+ <script src="./js/direcciones.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
@@ -504,6 +501,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/Simple-Slider.js"></script>
+    <!--<<script>
+        function changeText(id) {
+          id.innerHTML = "Ooops!";
+          var pONumb = ${sessionScope.pONumb};
+        }
+        </script>
+
+    <h1 id="h1Prueba" onclick="changeText(this)">Click on this text!</h1>
+        <form action="login.html" method="GET">
+            <input type="text" name="serialNumber" />
+        <input type="submit" value="Submit" />
+        </form>-->
 </body>
 
 </html>
