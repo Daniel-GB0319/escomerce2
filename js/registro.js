@@ -95,12 +95,12 @@ taskForm.addEventListener('submit', async (e) => {
                 urlComprobante = sessionStorage.getItem('urlComprobante');
                 clabe = Number(taskForm['llenar_clabe'].value);
                 console.log(urlINE); 
-                await saveVendedor(nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente, tipoCuenta, urlINE, urlComprobante, clabe);
+                await saveVendedor(nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente, tipoCuenta, sessionStorage.getItem('urlINE'), sessionStorage.getItem('urlComprobante'), clabe);
                 //sessionStorage.removeItem('urlINE');
                 //sessionStorage.removeItem('urlComprobante');
-                //await mensajeDeExito('Registro exitoso', './login.html');
-                function redireccionar() { location.href = "./login.html"; }
-                setTimeout(redireccionar(), 25000);
+                await mensajeDeExito('Registro exitoso', './login.html');
+                //function redireccionar() { location.href = "./login.html"; }
+                //setTimeout(redireccionar(), 35000);
 
             } else {
                 password2 = taskForm['llenar_confirmar_password_cliente'].value;
@@ -185,6 +185,7 @@ subirINE = function () {
     }, function (){
         storageRef.getDownloadURL().then((url) =>{
             sessionStorage.setItem('urlINE', url);
+                setTimeout(8000);
         });
         console.log(urlINE);
     });

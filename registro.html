@@ -25,19 +25,30 @@
 <body>
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
         <div class="container">
-            <div><img src="assets/img/LOGO.png" onclick="inicio()"><img src="assets/img/LETRAS%20LOGO.png" onclick="inicio()"></div><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div><img src="assets/img/LOGO.png" onclick="inicio()"><img src="assets/img/LETRAS%20LOGO.png"
+                    onclick="inicio()"></div><button data-bs-toggle="collapse" class="navbar-toggler"
+                data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span
+                    class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav d-flex align-items-center align-content-center ms-auto">
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="catalogo.html">catalogo</a></li>
-                    <li class="nav-item d-flex flex-row-reverse"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);border-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-top-left-radius: 10px;font-family: Montserrat, sans-serif;"
-                            onclick="verCarrito()"><span>Cantidad</span><i class="fa fa-shopping-cart" style="margin-left: 10px;"></i></button></li>
+                    <li class="nav-item d-flex flex-row-reverse"><button class="btn btn-primary" type="button"
+                            style="background: rgb(13,136,208);border-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-top-left-radius: 10px;font-family: Montserrat, sans-serif;"
+                            onclick="verCarrito()"><span id="numCart">Cantidad</span><i class="fa fa-shopping-cart"
+                                style="margin-left: 10px;"></i></button></li>
                     <li class="nav-item d-flex flex-row-reverse">
                         <div class="d-flex flex-column-reverse">
                             <div>
-                                <div class="input-group"><input class="form-control" type="text" style="border-color: RGB(13,136,208);border-top-left-radius: 10px;border-bottom-left-radius: 10px;width: 190px;"><button class="btn btn-primary" type="button" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: rgb(13,136,208);"><i class="fa fa-search" style="width: 80%;"></i></button></div>
+                                <div class="input-group"><input class="form-control" type="text"
+                                        style="border-color: RGB(13,136,208);border-top-left-radius: 10px;border-bottom-left-radius: 10px;width: 190px;"><button
+                                        class="btn btn-primary" type="button"
+                                        style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: rgb(13,136,208);"><i
+                                            class="fa fa-search" style="width: 80%;"></i></button></div>
                             </div>
-                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
+                            <div class="d-flex flex-row-reverse justify-content-around" id="login_header">
+                                <a href="./perfilUsuario.html"><i class="la la-user"></i></a>
+                                <a href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
                         </div>
                     </li>
                 </ul>
@@ -146,18 +157,18 @@
                                 <option>UPIIP</option>
                                 <option>UPIEM</option>
                                 <option>UPIIT</option>
-                        </select>
-                    </div>
-                    <div class="mb-3" id="grupo__telefono" class="formulario__grupo">
-                        <label class="form-label" for="telefono">Teléfono: </label>
-                        <div class="formulario__grupo-input">
-                            <input name="telefono" class="form-control" type="text" id="llenar_telefono_cliente" placeholder="10 dígitos (opcional)">
-                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
-                        </div>
-                        <p class="formulario__input-error">El telefono debe ser de 10 digitos</p>
-                    </div>
-                    <div class="mb-3" id="grupo__checkVendedor" class="formulario__grupo">
-                        <div class="form-check"><input name="checkVendedor" class="form-check-input" type="checkbox" id="checkVendedorRegistro" onchange="javascript:showQuieroVender()"><label class="form-check-label" for="checkQuieroVender">Quiero ser vendedor</label></div>
+                            </select>
+                            </div>
+                            <div class="mb-3" id="grupo__telefono" class="formulario__grupo">
+                                <label class="form-label" for="telefono">Teléfono: </label>
+                                <div class="formulario__grupo-input">
+                                    <input name="telefono" class="form-control" type="text" id="llenar_telefono_cliente" placeholder="10 dígitos (opcional)">
+                                    <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                                </div>
+                                <p class="formulario__input-error">El telefono debe ser de 10 digitos</p>
+                            </div>
+                            <div class="mb-3" id="grupo__checkVendedor" class="formulario__grupo">
+                                <div class="form-check"><input name="checkVendedor" class="form-check-input" type="checkbox" id="checkVendedorRegistro" onchange="javascript:showQuieroVender()"><label class="form-check-label" for="checkQuieroVender">Quiero ser vendedor</label></div>
                     </div>
                     <div id="opcionesQuieroVender" style="display: none;">
                         <div class="d-block mb-3" id="divINERegistro">
@@ -184,7 +195,39 @@
             <p>© Equipo 3 | Análisis y diseño orientado a objetos | 2CV16 | IPN-ESCOM<br></p>
         </div>
     </footer>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-storage.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
+    
+        <script>
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            var firebaseConfig = {
+                apiKey: "AIzaSyC5pkmnPgxN2fF58oCj47RMMQBBoqJXTyc",
+                authDomain: "escommerce-6dadb.firebaseapp.com",
+                databaseURL: "https://escommerce-6dadb-default-rtdb.firebaseio.com",
+                projectId: "escommerce-6dadb",
+                storageBucket: "gs://escommerce-6dadb.appspot.com",
+                messagingSenderId: "963353940793",
+                appId: "1:963353940793:web:168c75d0b777d32a230ee8",
+                measurementId: "G-G7D0QTM0PQ"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+            
+            var defaultStorage = firebase.storage();
+    
+        </script>
+    <!--<script type="module" src="./js/login.js"></script>-->
+    <script src="./js/registro.js"></script>
     <script src="./assets/js/registro.js"></script>
+    <script src="./assets/js/sweetalert.js "></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
@@ -192,10 +235,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/Simple-Slider.js"></script>
-    <script src="./assets/js/sweetalert.js "></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
     <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
-
 </body>
 
 </html>

@@ -58,7 +58,7 @@ const validarCampo = (expresion, input, campo) => {
         document.querySelector(`#grupo__${ campo} i`).classList.add('fa-check-circle');
         document.querySelector(`#grupo__${campo} i`).classList.remove('fa-times-circle');
         document.querySelector(`#grupo__${campo} .formulario__input-error`).classList.remove('formulario__input-error-activo');
-        document.querySelector(`#grupo__${campo} .formulario__input-error`).show();
+        //document.querySelector(`#grupo__${campo} .formulario__input-error`).show();
 
         campos[campo] = true;
     } else {
