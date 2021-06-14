@@ -155,10 +155,10 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
     })
     getCarrito((querySnapshot) => {
-        numCarrito.innerHTML = ''
+        
         querySnapshot.forEach(doc => {
             cantidadCarrito = doc.data()
-            cantidadCarrito
+            
             console.log(cantidadCarrito.infoProducto.length)
             numCarrito.innerHTML = `
             <ul class="navbar-nav d-flex align-items-center align-content-center ms-auto">
@@ -171,7 +171,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                             <div>
                                 <div class="input-group"><input class="form-control" type="text" style="border-color: RGB(13,136,208);border-top-left-radius: 10px;border-bottom-left-radius: 10px;width: 190px;"><button class="btn btn-primary" type="button" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: rgb(13,136,208);"><i class="fa fa-search" style="width: 80%;"></i></button></div>
                             </div>
-                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a id="login_header" href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
+                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a id="login_header" href="login.html" style="font-family: Montserrat, sans-serif;">Cerrar Sesión</a></div>
                         </div>
                     </li>
                 </ul>`
