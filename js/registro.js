@@ -96,9 +96,12 @@ taskForm.addEventListener('submit', async (e) => {
                 clabe = Number(taskForm['llenar_clabe'].value);
                 console.log(urlINE); 
                 await saveVendedor(nombreCliente, apCliente, amCliente, boletaCliente, emailCliente, passwordCliente, escuelaCliente, telCliente, tipoCuenta, urlINE, urlComprobante, clabe);
-                sessionStorage.removeItem('urlINE');
-                sessionStorage.removeItem('urlComprobante');
-                await mensajeDeExito('Registro exitoso', './login.html');
+                //sessionStorage.removeItem('urlINE');
+                //sessionStorage.removeItem('urlComprobante');
+                //await mensajeDeExito('Registro exitoso', './login.html');
+                function redireccionar() { location.href = "./login.html"; }
+                setTimeout(redireccionar(), 25000);
+
             } else {
                 password2 = taskForm['llenar_confirmar_password_cliente'].value;
                 nombreCliente = taskForm['llenar_nombre_cliente'].value.toUpperCase();

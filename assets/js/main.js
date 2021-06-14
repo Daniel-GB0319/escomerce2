@@ -103,18 +103,19 @@ function showQuieroVender() {
 async function logout() {
     document.addEventListener('DOMContentLoaded', async (e) => {
         e.preventDefault();
-        if (sessionStorage.getItem('estadoCuenta') == 'false') {
-            document.getElementById('login_header').innerHTML = '<a href="login.html" style="font-family: Montserrat, sans-serif;"> iniciar sesión/registrarse </a>';
-            document.getElementById('login_header').addEventListener('click', function () {
-                window.location = './login.html';
-            });
-
-        } else {
+        if (sessionStorage.getItem('estadoCuenta') == 'true') {
             document.getElementById('login_header').innerHTML = '<a href="./perfilUsuario.html"><i class="la la-user"></i></a>'+
             '<a href="login.html" style="font-family: Montserrat, sans-serif;"> cerrar sesión </a>';
             document.getElementById('login_header').addEventListener('click', function () {
                 sessionStorage.removeItem('idCliente');
                 sessionStorage.setItem('estadoCuenta', false);
+            });
+
+        } else {
+            
+            document.getElementById('login_header').innerHTML = '<a href="login.html" style="font-family: Montserrat, sans-serif;"> iniciar sesión/registrarse </a>';
+            document.getElementById('login_header').addEventListener('click', function () {
+                window.location = './login.html';
             });
         }
     })
