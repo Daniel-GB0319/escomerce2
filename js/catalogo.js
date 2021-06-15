@@ -7,8 +7,11 @@ const numCarrito = document.getElementById('navcol-1');
 let carritoOn = false;
 let editStatus = false;
 let id = '';
-let idCliente = 'fkGyA6cAf53siIWITwQC';
+let idCliente = sessionStorage.getItem('idCliente');
+var existeCarrito = false;
+
 let idCarritoComprar = idCliente +'1';
+const datosProducto = [];
 //Funcion para guardar la informacion en la base de datos
 const saveIntegrantes = (nombre_prod, desc_prod, cant_prod, prec_prod, cond_prod, url_prod, calif_prod, cat_prod) =>
     //Creará la coleccion de la base de datos en Firebase
@@ -43,12 +46,12 @@ const addVerProducto = (idProducto, datosProducto, precioProducto) => db.collect
 
 //Imprimir
 window.addEventListener('DOMContentLoaded', async (e) => {
-
+    
     onGetIntegrantes((querySnapshot) => {
         
         //Borra el contenido anterior dentro del div
         taskContainer.innerHTML = '';
-        const datosProducto = [];
+        
         //Imprimimos los datos guardados en FireBase en la consola
         querySnapshot.forEach(doc => {
             
@@ -75,7 +78,6 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             const btnAdd = document.querySelectorAll('.btn-add');
 
             btnAdd.forEach(btn => {
-
                 btn.addEventListener('click', async (e) => {
                     const doc = await getProducto(e.target.dataset.id);
                     const datoActualizar = doc.data();
@@ -83,21 +85,100 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     const idProducto = e.target.dataset.id
                     var cant_prod_car = 1;
                     datoActualizar.id = doc.id;
+                    console.log(datoActualizar.id)
+                    console.log(idCliente)
                     
-                    datosProducto.push({
-                        nombre_prod : datoActualizar.nombre_prod,
-                        desc_prod : datoActualizar.desc_prod,
-                        cant_prod : datoActualizar.cant_prod,
-                        prec_prod : datoActualizar.prec_prod,
-                        cond_prod : datoActualizar.cond_prod,
-                        url_prod : datoActualizar.url_prod,
-                        calif_prod : datoActualizar.calif_prod,
-                        cat_prod : datoActualizar.cat_prod,
-                        id_prod : idProducto,
-                        cant_prod_car: cant_prod_car
+                    
+                    function carritoActualizar() {
+                        if(existeCarrito == true){}
+                    }
+                    //SI EXISTE EL CARRITO
+                    db.collection('carrito').where("idCliente","==", idCliente).get()
+                    .then((querySnapshot) => {
+                        
+                        querySnapshot.forEach((doc) => {
+                            existeCarrito = true;
+                            consultCarrito = doc.data();
+                            console.log(consultCarrito.infoProducto)
+                            const encontrarDato = consultCarrito.infoProducto.find(item => {
+                                return item.id_prod === e.target.dataset.id;
+                            })
+                            const indexModificar = consultCarrito.infoProducto.findIndex(item => {
+                                return item.id_prod === e.target.dataset.id;
+                            })
+
+                            //ACTUALIZAR CANTIDAD PROUDUCTO
+
+                            if(!encontrarDato) {
+                                //Si No existe el producto, lo agrega al final
+                                console.log("NUEVO PRODUCTO:")
+                                consultCarrito.infoProducto.push({
+                                    nombre_prod : datoActualizar.nombre_prod,
+                                    desc_prod : datoActualizar.desc_prod,
+                                    cant_prod : datoActualizar.cant_prod,
+                                    prec_prod : datoActualizar.prec_prod,
+                                    cond_prod : datoActualizar.cond_prod,
+                                    url_prod : datoActualizar.url_prod,
+                                    calif_prod : datoActualizar.calif_prod,
+                                    cat_prod : datoActualizar.cat_prod,
+                                    id_prod : idProducto,
+                                    cant_prod_car: cant_prod_car
+                                })
+                                addCarrito(idCarritoComprar,idCliente,consultCarrito.infoProducto)
+
+                            } else {
+                                //Si existe el producto actualiza la cantidad
+                                //Valida que el contador no sobre pase el stock
+                            if(encontrarDato.cant_prod_car < encontrarDato.cant_prod){
+                                encontrarDato.cant_prod_car += 1;
+                            }
+                            console.log("Nueva cantidad: "+encontrarDato.cant_prod_car);
+                            const datosProducto = {
+                                nombre_prod: encontrarDato.nombre_prod,
+                                desc_prod: encontrarDato.desc_prod,
+                                cant_prod: encontrarDato.cant_prod,
+                                prec_prod: encontrarDato.prec_prod,
+                                cond_prod: encontrarDato.cond_prod,
+                                url_prod: encontrarDato.url_prod,
+                                calif_prod: encontrarDato.calif_prod,
+                                cat_prod: encontrarDato.cat_prod,
+                                id_prod: encontrarDato.id_prod,
+                                cant_prod_car: encontrarDato.cant_prod_car
+                            }
+                            console.log("Nuevo:")
+                            console.log(datosProducto) 
+                            consultCarrito.infoProducto.splice(indexModificar, 1, datosProducto);
+                            addCarrito(idCarritoComprar,idCliente,consultCarrito.infoProducto)
+                            }
+                        })
+                    })
+                    .catch((error) => {
+                        console.log("Error getting documents: ", error);
                     })
                     
-                    await addCarrito(idCarritoComprar,idCliente,datosProducto);
+                    
+                    
+                     
+                    //db.collection('carrito').where("idCliente","",)
+                    if (existeCarrito == false) {
+                        datosProducto.push({
+                            nombre_prod : datoActualizar.nombre_prod,
+                            desc_prod : datoActualizar.desc_prod,
+                            cant_prod : datoActualizar.cant_prod,
+                            prec_prod : datoActualizar.prec_prod,
+                            cond_prod : datoActualizar.cond_prod,
+                            url_prod : datoActualizar.url_prod,
+                            calif_prod : datoActualizar.calif_prod,
+                            cat_prod : datoActualizar.cat_prod,
+                            id_prod : idProducto,
+                            cant_prod_car: cant_prod_car
+                        })
+                        const datosCarrito = datosProducto
+                        
+                        await addCarrito(idCarritoComprar,idCliente,datosCarrito);
+                        
+                    }
+                    
                 })
             })
 
@@ -105,26 +186,14 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
             //Vamos  la vista Descripcion del producto
             btnDesc.forEach(btn => {
-
                 btn.addEventListener('click', async (e) => {
-
-                    const doc = await getProducto(e.target.dataset.id);
-                    const datoVer = doc.data();
-                    //console.log(e.target.dataset.id)
-                    const idProducto = e.target.dataset.id
-                    const precioProducto = datoVer.prec_prod
-                    const datosProducto = [{
-                        nom_prod: datoVer.nombre_prod,
-                        desc_prod: datoVer.desc_prod,
-                        cantidad_prod: datoVer.cant_prod,
-                        estado_prod: datoVer.cond_prod,
-                        foto_prod: datoVer.url_prod,
-                        rate_prod: datoVer.calif_prod,
-                        categoria_prod: datoVer.cat_prod,
-                    }];
-                    await addVerProducto(idProducto, datosProducto, precioProducto);
-                    function redireccionar() { location.href = "descripcionProducto.html"; }
-                    setTimeout(redireccionar(), 25000);
+                const idProductoG = await getProducto(e.target.dataset.id);
+                const datoVer = idProductoG.data();
+                var nombrep = datoVer.nombre_prod
+                //console.log(nombrep)
+                localStorage.setItem("nombre_variable",nombrep);
+                function redireccionar() { location.href = "descripcionProducto.html"; }
+                setTimeout(redireccionar(), 25000);
                 })
             })
 

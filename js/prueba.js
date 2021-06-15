@@ -155,9 +155,9 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     })
                     
                     
-                    /*
+                    
                      
-                    db.collection('carrito').where("idCliente","",)
+                    //db.collection('carrito').where("idCliente","",)
                     datosProducto.push({
                         nombre_prod : datoActualizar.nombre_prod,
                         desc_prod : datoActualizar.desc_prod,
@@ -171,8 +171,8 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                         cant_prod_car: cant_prod_car
                     })
                     const datosCarrito = datosProducto
-                    */
-                    //await addCarrito(idCarritoComprar,idCliente,datosCarrito);
+                    
+                    await addCarrito(idCarritoComprar,idCliente,datosCarrito);
                 })
             })
 
