@@ -140,12 +140,12 @@
                             <h3 class="title">Seleccionar método de pago</h3>
                             <div class="d-flex justify-content-around align-self-center"
                                 style="width: 80%;margin-bottom: 40px;"><button
-                                    class="btn btn-primary d-flex align-self-center" type="button"
+                                    class="btn btn-primary d-flex align-self-center" type="button" id="payCard" onclick="showMetodoCard()"
                                     style="background: rgb(13,136,208);">Tarjeta de crédito/débito</button><button
-                                    class="btn btn-primary d-flex align-self-center" type="button"
+                                    class="btn btn-primary d-flex align-self-center" type="button" id="payCash" onclick="showMetodoCash()"
                                     style="background: rgb(13,136,208);">Efectivo</button></div>
                         </div>
-                        <div class="d-flex flex-column card-details">
+                        <div class=" flex-column card-details" id="divPagoCash" style="display:none;">
                             <h3 class="title">Pago en efectivo</h3><span>Se va a generar un archivo con una linea de
                                 captura para que puedas realizar el pago en tu tienda OXXO más cercana.<br></span>
                             <div class="d-flex justify-content-around align-self-center"
@@ -154,31 +154,31 @@
                                     style="background: rgb(13,136,208);">Proceder al pago.</button></div>
                         </div>
                         <div style="width: 80%;"></div>
-                        <div class="d-flex flex-column card-details">
+                        <div class=" flex-column card-details" id="divPagoCard" style="display:none;">
                             <h3 class="title">Detalles de la tarjeta</h3>
                             <div class="row">
                                 <div class="col-sm-7">
                                     <div class="mb-3"><label class="form-label" for="card_holder">nombre
                                             tarjetahabiente</label><input class="form-control form-control-sm"
                                             type="text" id="card_holder-1"
-                                            placeholder="Nombre como aparece en la tarjeta" name="card_holder"></div>
+                                            placeholder="Nombre como aparece en la tarjeta" name="card_holder" pattern="[a-zA-Z ]+[a-zA-Z ]" required autofocus title="Ingresa solo Mayusculas y Minusculas"></div>
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="mb-3"><label class="form-label">fecha de expiración</label>
                                         <div class="input-group expiration-date"><input class="form-control" type="text"
-                                                id="card_month-1" placeholder="MM" name="expiration_month"><input
+                                                id="card_month-1" placeholder="MM" name="expiration_month" pattern="[0]+[1-9]|[1]+[0-2]" minlength="2" maxlength="2" required title="Ingresa el mes en digitos (01 hasta 12)"><input
                                                 class="form-control" type="text" id="card_year-1" placeholder="AA"
-                                                name="expiration_year"></div>
+                                                name="expiration_year" pattern="[2]+[2-9]|[3-9]+[0-9]" minlength="2" maxlength="2" required title="Ingresa ultimos 2 digitos del año (22 en adelante)"></div>
                                     </div>
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="mb-3"><label class="form-label" for="card_number">numero de
                                             tarjeta</label><input class="form-control" type="text" id="card_number-1"
-                                            placeholder="16 digitos de la tarjeta" name="card_number"></div>
+                                            placeholder="16 digitos de la tarjeta" name="card_number" pattern="[0-9]+" minlength="16" maxlength="16" required title="Ingresa los 16 Digitos sin guiones"></div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="mb-3"><label class="form-label" for="cvc">CVC</label><input
-                                            class="form-control" type="text" id="cvc-1" placeholder="CVC" name="cvc">
+                                            class="form-control" type="text" id="cvc-1" placeholder="CVC" name="cvc" pattern="[0-9]+" minlength="3" maxlength="3" required title="Ingresa los 3 digitos">
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
@@ -233,7 +233,7 @@
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
-
+    <script src="./assets/js/main.js"></script>
     <script src="assets/js/Simple-Slider.js"></script>
 </body>
 
