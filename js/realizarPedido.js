@@ -1,8 +1,15 @@
 //const db = firebase.firestore();
-
-
+var idCliente;
+var calle;
+var noExt;
+var noInt;
+var colonia;
+var alcaldia;
+var CP;
+var referencias;
 //const taskContainer = document.getElementById('printMetodoPagos');
-
+var dirRef;
+var cont = 0;
 let editStatus = false;
 let id = '';
 
@@ -86,6 +93,8 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
 });
 
+
+
 //Estructura de la informacion que se guardará a la base de datos
 taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -151,3 +160,67 @@ document.getElementById("payCash").addEventListener('click',async(e)=>{
     efectivo = true;
     tarjetaCredito= false;
     showMetodoCard()});
+
+const saveDireccion = (idCliente, calle, noInt, noExt, colonia, alcaldia, CP, referencias) =>
+
+db.collection('direcciones').doc().set({
+    idCliente,
+    calle, 
+    noInt, 
+    noExt, 
+    colonia, 
+    alcaldia, 
+    CP, 
+    referencias
+})
+
+document.getElementById("btnAgregarDireccionCompra").addEventListener("click", async (e) => {
+    document.getElementById('calle').setAttribute("required", "");
+    document.getElementById('noExt').setAttribute("required", "");
+    document.getElementById('colonia').setAttribute("required", "");
+    document.getElementById('alcaldia').setAttribute("required", "");
+    document.getElementById('cp').setAttribute("required", "");
+    document.getElementById('referencias').setAttribute("required", "");
+})
+document.getElementById("btnClose").addEventListener("click", async (e) => {
+    document.getElementById('calle').removeAttribute("required");
+    document.getElementById('noExt').removeAttribute("required");
+    document.getElementById('colonia').removeAttribute("required");
+    document.getElementById('alcaldia').removeAttribute("required");
+    document.getElementById('cp').removeAttribute("required");
+    document.getElementById('referencias').removeAttribute("required");
+})
+
+document.getElementById('btnGuardarDir').addEventListener("click", async (e) => {
+    idCliente = sessionStorage.getItem('idCliente');
+    calle = document.getElementById("calle").value;
+    noInt = document.getElementById("noInt").value;
+    noExt = document.getElementById("noExt").value;
+    colonia = document.getElementById("colonia").value;
+    alcaldia = document.getElementById("alcaldia").value;
+    CP = Number(document.getElementById("cp").value);
+    referencias = document.getElementById("referencias").value;
+    await saveDireccion (idCliente, calle, noInt, noExt, colonia, alcaldia, CP, referencias);
+})
+
+
+
+addEventListener('DOMContentLoaded', async (e) => {
+    e.preventDefault();
+    db.collection("direcciones").where("idCliente", "==", sessionStorage.getItem('idCliente'))
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            dirRef = doc.data();
+            console.log(dirRef.calle);
+            var select = document.getElementById("selectDir")
+            var option = document.createElement("option");
+            option.innerHTML = dirRef.calle + " #" + dirRef.noExt;
+            select.appendChild(option);
+        })
+    }).catch((error) => {
+        console.log("Error getting documents: ", error);
+    })
+    /*document.getElementById("divDireccion").innerHTML = '<span>Dirección: </span><select class="form-select" id="selectDir" style="margin-bottom: 40px;">'
+    + '';*/
+})
