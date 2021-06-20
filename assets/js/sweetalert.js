@@ -8,33 +8,14 @@ function mensajeAdvertencia ( mensaje ) {
     })
 }
 
-function mensajeDeExito1(mensaje) {
-    Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: mensaje,
-        showConfirmButton: true
-    })
-}
 function mensajeDeExito(mensaje, redireccion) {
     Swal.fire({
         position: 'center',
         icon: 'success',
         title: mensaje,
         showConfirmButton: false,
-        timer: 1000
-    }).then(async (e) => {
-        window.location = redireccion;
-    })
-}
-function mensajeDeExito(mensaje, redireccion, tiempo) {
-    Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: mensaje,
-        showConfirmButton: false,
-        timer: tiempo
-    }).then(async (e) => {
+        timer: 2500
+    }).then(async function () {
         window.location = redireccion;
     })
 }

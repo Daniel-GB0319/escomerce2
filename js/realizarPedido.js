@@ -202,7 +202,10 @@ document.getElementById("btnCerrar").addEventListener("click", async (e) => {
 
 document.getElementById('btnGuardarDir').addEventListener("click", async (e) => {
     e.preventDefault();
-    if(existeDir == false){
+    if(existeDir == true){
+        mensajeAdvertencia('Esta direccion ya esta en tus opciones');
+        return;
+    }else{
         idCliente = sessionStorage.getItem('idCliente');
         calle = document.getElementById("calle").value.toUpperCase();
         noInt = Number(document.getElementById("noInt").value);
@@ -212,10 +215,8 @@ document.getElementById('btnGuardarDir').addEventListener("click", async (e) => 
         CP = Number(document.getElementById("cp").value);
         referencias = document.getElementById("referencias").value.toUpperCase();
         await saveDireccion (idCliente, calle, noInt, noExt, colonia, alcaldia, CP, referencias);
-        mensajeDeExito1('Direccion registrada con exito');
-    }else{
-        mensajeAdvertencia('Esta direccion ya esta en tus opciones');
-        return;
+        mensajeDeExito('Direccion registrada con exito', './realizarPedido.html');
+        location.reload();
     }
 })
 
@@ -236,19 +237,16 @@ addEventListener('DOMContentLoaded', async (e) => {
     }).catch((error) => {
         console.log("Error getting documents: ", error);
     })
-    /*document.getElementById("divDireccion").innerHTML = '<span>Dirección: </span><select class="form-select" id="selectDir" style="margin-bottom: 40px;">'
-    + '';*/
 })
 
-document.getElementById('modalDireccion').addEventListener('keydown', async (e) => {
+document.getElementById('modalDireccion').addEventListener('keyup', async (e) => {
     existeDir = false;
-    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value)
+    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value.toUpperCase())
     .where("idCliente", "==", sessionStorage.getItem('idCliente'))
-    .where("noExt", "==", document.getElementById('noExt').value)
-    .where("noInt", "==", document.getElementById('noInt').value)
-    .where("colonia", "==", document.getElementById('colonia').value)
-    .where("alcaldia", "==", document.getElementById('alcaldia').value)
-    .where("cp", "==", document.getElementById('cp').value)
+    .where("noExt", "==", Number(document.getElementById('noExt').value))
+    .where("colonia", "==", document.getElementById('colonia').value.toUpperCase())
+    .where("alcaldia", "==", document.getElementById('alcaldia').value.toUpperCase())
+    .where("CP", "==", Number(document.getElementById('cp').value))
     .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -258,19 +256,16 @@ document.getElementById('modalDireccion').addEventListener('keydown', async (e) 
         .catch((error) => {
             console.log("Error getting documents: ", error);
         })
-        sessionStorage.setItem('estadoCuenta', false);
-        console.log(sessionStorage.getItem('estadoCuenta'));
 });
 
 document.getElementById('modalDireccion').addEventListener('click', async (e) => {
     existeDir = false;
-    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value)
+    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value.toUpperCase())
     .where("idCliente", "==", sessionStorage.getItem('idCliente'))
-    .where("noExt", "==", document.getElementById('noExt').value)
-    .where("noInt", "==", document.getElementById('noInt').value)
-    .where("colonia", "==", document.getElementById('colonia').value)
-    .where("alcaldia", "==", document.getElementById('alcaldia').value)
-    .where("cp", "==", document.getElementById('cp').value)
+    .where("noExt", "==", Number(document.getElementById('noExt').value))
+    .where("colonia", "==", document.getElementById('colonia').value.toUpperCase())
+    .where("alcaldia", "==", document.getElementById('alcaldia').value.toUpperCase())
+    .where("CP", "==", Number(document.getElementById('cp').value))
     .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -280,19 +275,16 @@ document.getElementById('modalDireccion').addEventListener('click', async (e) =>
         .catch((error) => {
             console.log("Error getting documents: ", error);
         })
-        sessionStorage.setItem('estadoCuenta', false);
-        console.log(sessionStorage.getItem('estadoCuenta'));
 });
 
 document.getElementById('modalDireccion').addEventListener('input', async (e) => {
     existeDir=false;
-    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value)
+    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value.toUpperCase())
     .where("idCliente", "==", sessionStorage.getItem('idCliente'))
-    .where("noExt", "==", document.getElementById('noExt').value)
-    .where("noInt", "==", document.getElementById('noInt').value)
-    .where("colonia", "==", document.getElementById('colonia').value)
-    .where("alcaldia", "==", document.getElementById('alcaldia').value)
-    .where("cp", "==", document.getElementById('cp').value)
+    .where("noExt", "==", Number(document.getElementById('noExt').value))
+    .where("colonia", "==", document.getElementById('colonia').value.toUpperCase())
+    .where("alcaldia", "==", document.getElementById('alcaldia').value.toUpperCase())
+    .where("CP", "==", Number(document.getElementById('cp').value))
     .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -302,6 +294,4 @@ document.getElementById('modalDireccion').addEventListener('input', async (e) =>
         .catch((error) => {
             console.log("Error getting documents: ", error);
         })
-        sessionStorage.setItem('estadoCuenta', false);
-        console.log(sessionStorage.getItem('estadoCuenta'));
 });
