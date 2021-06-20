@@ -12,6 +12,7 @@ var dirRef;
 var cont = 0;
 let editStatus = false;
 let id = '';
+var existeDir = false;
 
 //Funcion para guardar la informacion en la base de datos
 const saveMetodoPagos = (titular_metodoPago, numeroTarjeta_metodoPago, cvc_metodoPago, month_metodoPago, year_metodoPago) =>
@@ -190,17 +191,32 @@ document.getElementById("btnClose").addEventListener("click", async (e) => {
     document.getElementById('cp').removeAttribute("required");
     document.getElementById('referencias').removeAttribute("required");
 })
+document.getElementById("btnCerrar").addEventListener("click", async (e) => {
+    document.getElementById('calle').removeAttribute("required");
+    document.getElementById('noExt').removeAttribute("required");
+    document.getElementById('colonia').removeAttribute("required");
+    document.getElementById('alcaldia').removeAttribute("required");
+    document.getElementById('cp').removeAttribute("required");
+    document.getElementById('referencias').removeAttribute("required");
+})
 
 document.getElementById('btnGuardarDir').addEventListener("click", async (e) => {
-    idCliente = sessionStorage.getItem('idCliente');
-    calle = document.getElementById("calle").value;
-    noInt = document.getElementById("noInt").value;
-    noExt = document.getElementById("noExt").value;
-    colonia = document.getElementById("colonia").value;
-    alcaldia = document.getElementById("alcaldia").value;
-    CP = Number(document.getElementById("cp").value);
-    referencias = document.getElementById("referencias").value;
-    await saveDireccion (idCliente, calle, noInt, noExt, colonia, alcaldia, CP, referencias);
+    e.preventDefault();
+    if(existeDir == false){
+        idCliente = sessionStorage.getItem('idCliente');
+        calle = document.getElementById("calle").value.toUpperCase();
+        noInt = Number(document.getElementById("noInt").value);
+        noExt = Number(document.getElementById("noExt").value);
+        colonia = document.getElementById("colonia").value.toUpperCase();
+        alcaldia = document.getElementById("alcaldia").value.toUpperCase();
+        CP = Number(document.getElementById("cp").value);
+        referencias = document.getElementById("referencias").value.toUpperCase();
+        await saveDireccion (idCliente, calle, noInt, noExt, colonia, alcaldia, CP, referencias);
+        mensajeDeExito1('Direccion registrada con exito');
+    }else{
+        mensajeAdvertencia('Esta direccion ya esta en tus opciones');
+        return;
+    }
 })
 
 
@@ -212,7 +228,6 @@ addEventListener('DOMContentLoaded', async (e) => {
     .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             dirRef = doc.data();
-            console.log(dirRef.calle);
             var select = document.getElementById("selectDir")
             var option = document.createElement("option");
             option.innerHTML = dirRef.calle + " #" + dirRef.noExt;
@@ -224,3 +239,69 @@ addEventListener('DOMContentLoaded', async (e) => {
     /*document.getElementById("divDireccion").innerHTML = '<span>Dirección: </span><select class="form-select" id="selectDir" style="margin-bottom: 40px;">'
     + '';*/
 })
+
+document.getElementById('modalDireccion').addEventListener('keydown', async (e) => {
+    existeDir = false;
+    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value)
+    .where("idCliente", "==", sessionStorage.getItem('idCliente'))
+    .where("noExt", "==", document.getElementById('noExt').value)
+    .where("noInt", "==", document.getElementById('noInt').value)
+    .where("colonia", "==", document.getElementById('colonia').value)
+    .where("alcaldia", "==", document.getElementById('alcaldia').value)
+    .where("cp", "==", document.getElementById('cp').value)
+    .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                existeDir = true;
+            })
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+        sessionStorage.setItem('estadoCuenta', false);
+        console.log(sessionStorage.getItem('estadoCuenta'));
+});
+
+document.getElementById('modalDireccion').addEventListener('click', async (e) => {
+    existeDir = false;
+    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value)
+    .where("idCliente", "==", sessionStorage.getItem('idCliente'))
+    .where("noExt", "==", document.getElementById('noExt').value)
+    .where("noInt", "==", document.getElementById('noInt').value)
+    .where("colonia", "==", document.getElementById('colonia').value)
+    .where("alcaldia", "==", document.getElementById('alcaldia').value)
+    .where("cp", "==", document.getElementById('cp').value)
+    .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                existeDir = true;
+            })
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+        sessionStorage.setItem('estadoCuenta', false);
+        console.log(sessionStorage.getItem('estadoCuenta'));
+});
+
+document.getElementById('modalDireccion').addEventListener('input', async (e) => {
+    existeDir=false;
+    db.collection("direcciones").where("calle", "==", document.getElementById('calle').value)
+    .where("idCliente", "==", sessionStorage.getItem('idCliente'))
+    .where("noExt", "==", document.getElementById('noExt').value)
+    .where("noInt", "==", document.getElementById('noInt').value)
+    .where("colonia", "==", document.getElementById('colonia').value)
+    .where("alcaldia", "==", document.getElementById('alcaldia').value)
+    .where("cp", "==", document.getElementById('cp').value)
+    .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                existeDir = true;
+            })
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        })
+        sessionStorage.setItem('estadoCuenta', false);
+        console.log(sessionStorage.getItem('estadoCuenta'));
+});

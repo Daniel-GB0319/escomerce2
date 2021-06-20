@@ -103,7 +103,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button id="btnGuardarDir" class="btn btn-primary" type="submit">Guardar</button>
-                                                <button class="btn btn-light" type="button" data-bs-dismiss="modal" data-bs-target="#modalDieccion">Cerrar</button>
+                                                <button id="btnCerrar" class="btn btn-light" type="button" data-bs-dismiss="modal" data-bs-target="#modalDieccion">Cerrar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -199,7 +199,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
-  https://firebase.google.com/docs/web/setup#available-libraries -->
+     https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
@@ -212,7 +212,7 @@
             authDomain: "escommerce-6dadb.firebaseapp.com",
             databaseURL: "https://escommerce-6dadb-default-rtdb.firebaseio.com",
             projectId: "escommerce-6dadb",
-            storageBucket: "escommerce-6dadb.appspot.com",
+            storageBucket: "gs://escommerce-6dadb.appspot.com",
             messagingSenderId: "963353940793",
             appId: "1:963353940793:web:168c75d0b777d32a230ee8",
             measurementId: "G-G7D0QTM0PQ"
@@ -220,12 +220,13 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
-
+        
         var defaultStorage = firebase.storage();
 
     </script>
     <script src="./js/pedidos.js"></script>
     <script src="./js/realizarPedido.js"></script>
+    <script src="./assets/js/sweetalert.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
@@ -233,6 +234,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
     <script src="./assets/js/main.js"></script>
     <script src="assets/js/Simple-Slider.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
 </body>
 
 </html>

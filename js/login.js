@@ -8,7 +8,7 @@ var password;
 sessionStorage.setItem('estadoCuenta',false);
 /*const taskForm = document.getElementById('form_login');*/
 
-form.addEventListener('change', async (e) => {
+form.addEventListener('keydown', async (e) => {
     db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
         .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
         .get()
@@ -27,10 +27,6 @@ form.addEventListener('change', async (e) => {
         console.log(sessionStorage.getItem('estadoCuenta'));
 });
 
-document.getElementById('loginBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    login();
-});
 form.addEventListener('click', async (e) => {
     db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
         .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
@@ -50,10 +46,6 @@ form.addEventListener('click', async (e) => {
         console.log(sessionStorage.getItem('estadoCuenta'));
 });
 
-document.getElementById('loginBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    login();
-});
 form.addEventListener('input', async (e) => {
     db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
         .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
