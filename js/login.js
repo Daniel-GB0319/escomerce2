@@ -5,10 +5,10 @@ let op = false;
 var idCliente;
 var email;
 var password;
-sessionStorage.setItem('estadoCuenta',false);
 /*const taskForm = document.getElementById('form_login');*/
 
-form.addEventListener('change', async (e) => {
+form.addEventListener('keyup', async (e) => {
+    sessionStorage.setItem('estadoCuenta', false);
     db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
         .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
         .get()
@@ -23,55 +23,8 @@ form.addEventListener('change', async (e) => {
         .catch((error) => {
             console.log("Error getting documents: ", error);
         })
-        sessionStorage.setItem('estadoCuenta', false);
-        console.log(sessionStorage.getItem('estadoCuenta'));
 });
 
-document.getElementById('loginBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    login();
-});
-form.addEventListener('click', async (e) => {
-    db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
-        .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                idCliente = doc.id;
-                console.log('hola');
-                sessionStorage.setItem('estadoCuenta', true);
-                console.log(sessionStorage.getItem('estadoCuenta'));
-            })
-        })
-        .catch((error) => {
-            console.log("Error getting documents: ", error);
-        })
-        sessionStorage.setItem('estadoCuenta', false);
-        console.log(sessionStorage.getItem('estadoCuenta'));
-});
-
-document.getElementById('loginBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    login();
-});
-form.addEventListener('input', async (e) => {
-    db.collection("clientes").where("emailCliente", "==", document.getElementById('emailCliente').value)
-        .where("passwordCliente", "==", document.getElementById('passwordCliente').value)
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                idCliente = doc.id;
-                console.log('hola');
-                sessionStorage.setItem('estadoCuenta', true);
-                console.log(sessionStorage.getItem('estadoCuenta'));
-            })
-        })
-        .catch((error) => {
-            console.log("Error getting documents: ", error);
-        })
-        sessionStorage.setItem('estadoCuenta', false);
-        console.log(sessionStorage.getItem('estadoCuenta'));
-});
 
 document.getElementById('loginBtn').addEventListener('click', async (e) => {
     e.preventDefault();
@@ -83,7 +36,6 @@ async function login() {
     if (sessionStorage.getItem('estadoCuenta') == 'true') {
         sessionStorage.setItem('idCliente', idCliente);
         mensajeDeExito('Inicio de sesion exitoso', './catalogo.html');
-        
     } else {
        mensajeAdvertencia( 'Los datos que ingreso son incorrectos' );
        return;
