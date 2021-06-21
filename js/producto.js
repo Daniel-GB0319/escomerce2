@@ -5,23 +5,28 @@ var spec = document.getElementById('specifications');
 var rev = document.getElementById('reviews');
 var rec = document.getElementById('recom');
 var come = document.getElementById('come');
+const addCarrito = (idCarritoProd, idCliente, infoProducto) => db.collection('carrito').doc(idCarritoProd).set({ idCliente, infoProducto });
 
 var getNombrep = localStorage.getItem("nombre_variable");
 var getCat = localStorage.getItem("cat_variable");
 var getId = localStorage.getItem("id_variable");
 let id = '';
-
-db.settings({timestampsInSpanshots: true});
+let idCliente = sessionStorage.getItem('idCliente');
+let idCarritoComprar = idCliente + '1';
+const getProducto = (id) => db.collection('producto').doc(id).get();
+var existeCarrito = false;
+const datosProducto = [];
+db.settings({ timestampsInSpanshots: true });
 //console.log(getNombrep);
-//console.log(getId);
+
 //window.onload = alert(localStorage.getItem("nombre_variable");
 
-db.collection("producto").where("nombre_prod", "==",  getNombrep, true).get().then((querySnapshot) => { 
+db.collection("producto").where("nombre_prod", "==", getNombrep, true).get().then((querySnapshot) => {
     produ.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const infoD = doc.data()
-            //console.log(`${doc.comentarios} => ${doc.data()}`);
-            produ.innerHTML += `
+    querySnapshot.forEach((doc) => {
+        const infoD = doc.data()
+        //console.log(`${doc.comentarios} => ${doc.data()}`);
+        produ.innerHTML += `
             <div id="infop" class="product-info">
                 <div class="row"> 
                     <div class="col-md-6">
@@ -48,11 +53,11 @@ db.collection("producto").where("nombre_prod", "==",  getNombrep, true).get().th
                             <div class="col-6 col-md-2 quantity">
                                 <label class="form-label d-none d-md-block" for="quantity">Cantidad
                                 </label>
-                                <input type="number"  class="form-control quantity-input" valor min="1" max="${infoD.cant_prod}" value="1">
+                                <input type="number" id="cantidadverprod" class="form-control quantity-input" valor min="1" max="${infoD.cant_prod}" value="1">
                             </div>
                             <br>
                             <div>
-                                <button class="btn btn-primary btn-add" onclick="hizoClick()" type="button" style="background: rgb(13,136,208);" >
+                                <button class="btn btn-primary btn-add"  type="button" style="background: rgb(13,136,208);" >
                                 Añadir Carrito
                                 </button>
                             </div>
@@ -62,13 +67,131 @@ db.collection("producto").where("nombre_prod", "==",  getNombrep, true).get().th
                         </div>
                     </div>
                 </div>
-            </div>`
-        });
+            </div>`;
+        const btnAdd = document.querySelectorAll('.btn-add');
+
+
+        btnAdd.forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const updCant = document.getElementById('cantidadverprod')
+                const upcantint = Number(updCant.value)
+                console.log(upcantint)
+                console.log(getId);
+                const doc = await getProducto(getId);
+                const datoActualizar = doc.data();
+                //console.log(e.target.dataset.id)
+                const idProducto = e.target.dataset.id
+                var cant_prod_car = 1;
+                datoActualizar.id = doc.id;
+
+                console.log(datoActualizar.id)
+                console.log(idCliente)
+
+
+                function carritoActualizar() {
+                    if (existeCarrito == true) { }
+                }
+                //SI EXISTE EL CARRITO
+                db.collection('carrito').where("idCliente", "==", idCliente).get()
+                    .then((querySnapshot) => {
+
+                        querySnapshot.forEach((doc) => {
+                            existeCarrito = true;
+                            consultCarrito = doc.data();
+                            //console.log(consultCarrito.infoProducto)
+                            const encontrarDato = consultCarrito.infoProducto.find(item => {
+                                return item.id_prod === e.target.dataset.id;
+                            })
+                            const indexModificar = consultCarrito.infoProducto.findIndex(item => {
+                                return item.id_prod === e.target.dataset.id;
+                            })
+
+                            //ACTUALIZAR CANTIDAD PROUDUCTO
+
+                            if (!encontrarDato) {
+                                //Si No existe el producto, lo agrega al final
+                                console.log("NUEVO PRODUCTO:")
+                                consultCarrito.infoProducto.push({
+                                    nombre_prod: datoActualizar.nombre_prod,
+                                    desc_prod: datoActualizar.desc_prod,
+                                    cant_prod: datoActualizar.cant_prod,
+                                    prec_prod: datoActualizar.prec_prod,
+                                    cond_prod: datoActualizar.cond_prod,
+                                    url_prod: datoActualizar.url_prod,
+                                    calif_prod: datoActualizar.calif_prod,
+                                    cat_prod: datoActualizar.cat_prod,
+                                    id_prod: getId,
+                                    cant_prod_car: upcantint
+                                })
+                                console.log('1 cantidad a base de datos: ' + consultCarrito.infoProducto.cant_prod_car)
+                                addCarrito(idCarritoComprar, idCliente, consultCarrito.infoProducto)
+                                console.log('funcion 1 enviado')
+
+                            } else {
+                                //Si existe el producto actualiza la cantidad
+                                //Valida que el contador no sobre pase el stock
+                                if (encontrarDato.cant_prod_car < encontrarDato.cant_prod) {
+                                    encontrarDato.cant_prod_car += 1;
+                                }
+                                console.log("Nueva cantidad: " + encontrarDato.cant_prod_car);
+                                const datosProducto = {
+                                    nombre_prod: encontrarDato.nombre_prod,
+                                    desc_prod: encontrarDato.desc_prod,
+                                    cant_prod: encontrarDato.cant_prod,
+                                    prec_prod: encontrarDato.prec_prod,
+                                    cond_prod: encontrarDato.cond_prod,
+                                    url_prod: encontrarDato.url_prod,
+                                    calif_prod: encontrarDato.calif_prod,
+                                    cat_prod: encontrarDato.cat_prod,
+                                    id_prod: getId,
+                                    cant_prod_car: upcantint
+                                }
+                                console.log("Nuevo:")
+                                console.log(datosProducto)
+                                consultCarrito.infoProducto.splice(indexModificar, 1, datosProducto);
+                                console.log('2 cantidad a base de datos: ' + datosProducto.cant_prod_car)
+                                addCarrito(idCarritoComprar, idCliente, consultCarrito.infoProducto)
+                                console.log('funcion 2 enviado')
+                            }
+                        })
+                    })
+                    .catch((error) => {
+                        console.log("Error getting documents: ", error);
+                    })
+
+
+
+
+                //db.collection('carrito').where("idCliente","",)
+                if (existeCarrito == false) {
+                    console.log('cantidad ' + upcantint)
+                    datosProducto.push({
+                        nombre_prod: datoActualizar.nombre_prod,
+                        desc_prod: datoActualizar.desc_prod,
+                        cant_prod: datoActualizar.cant_prod,
+                        prec_prod: datoActualizar.prec_prod,
+                        cond_prod: datoActualizar.cond_prod,
+                        url_prod: datoActualizar.url_prod,
+                        calif_prod: datoActualizar.calif_prod,
+                        cat_prod: datoActualizar.cat_prod,
+                        id_prod: getId,
+                        cant_prod_car: upcantint
+                    })
+                    const datosCarrito = datosProducto
+                    console.log(datosCarrito)
+                    await addCarrito(idCarritoComprar, idCliente, datosProducto);
+                    console.log('funcion 3 enviado')
+                }
+
+            })
+        })
     });
+
+});
 //<button data-id="' + infoDato.id + '"class="btn btn-primary btn-add" type="button" style="background: rgb(13,136,208);">Añadir Carrito</button>
 //<button id="aña" class="btn btn-primary btn-add"  type="button" style="background: rgb(13,136,208);"><i class="icon-basket"></i>Añadir al carrito</button></a>
 
-function hizoClick() {
+/*function hizoClick() {
     alert("Enviado");
     db.collection("carrito").doc().set({
         idCliente: "pruebaid" ,
@@ -85,7 +208,7 @@ function hizoClick() {
             }
         
     })
-  }
+  }*/
 
 
 
@@ -129,13 +252,13 @@ taskform.addEventListener('submit',e=>{
 
 
 const col = db.collection('producto');
-const query = col.where('specs', 'array-contains',getNombrep)
+const query = col.where('specs', 'array-contains', getNombrep)
 spec.innerHTML = '';
-query.get().then(snapshot =>{
-    snapshot.docs.forEach(doc =>{
-    const infoD = doc.data()
-    //console.log(doc.id,doc.data())
-    spec.innerHTML += `
+query.get().then(snapshot => {
+    snapshot.docs.forEach(doc => {
+        const infoD = doc.data()
+        //console.log(doc.id,doc.data())
+        spec.innerHTML += `
         <div class="table-responsive">
             <table class="table table-bordered">
                 <tbody>
@@ -153,13 +276,13 @@ query.get().then(snapshot =>{
 })
 
 const col2 = db.collection('comentarios');
-const query2 = col2.where('comentario', 'array-contains',getNombrep)
+const query2 = col2.where('comentario', 'array-contains', getNombrep)
 rev.innerHTML = '';
-query2.get().then(snapshot =>{
-    snapshot.docs.forEach(doc =>{
-    const infoD = doc.data()
-    //console.log(doc.id,doc.data())
-    rev.innerHTML += `
+query2.get().then(snapshot => {
+    snapshot.docs.forEach(doc => {
+        const infoD = doc.data()
+        //console.log(doc.id,doc.data())
+        rev.innerHTML += `
         <div class="reviews">
             <div class="review-item">
                 <h4>${infoD.comentario[3]}&nbsp;</h4>
@@ -170,7 +293,7 @@ query2.get().then(snapshot =>{
     })
 })
 
-db.collection("producto").where("cat_prod", "!=", getCat,true).limit(3).get().then((querySnapshot) => {
+db.collection("producto").where("cat_prod", "!=", getCat, true).limit(3).get().then((querySnapshot) => {
     rec.innerHTML = '';
     querySnapshot.forEach((doc) => {
         //console.log(doc.id, " => ", doc.data());
