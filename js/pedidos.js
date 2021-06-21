@@ -3,11 +3,12 @@ const db = firebase.firestore();
 const imprPedido = document.getElementById('imp-pedido');
 const totalPedido = document.getElementById('divTotal');
 const taskForm = document.getElementById('form_metodoPago');
+const btnEfectivo = document.getElementById('btn-pagarEfectivo')
 
 let carritoOn = false;
 let idCarritoBuscar = ''
 let productosConfirmados = [];
-let idUsuario = ''
+let idUsuario = sessionStorage.getItem('idCliente');
 //Funcion para imprimir la informacion
 const onGetCarrito = (callback) => db.collection('carrito').onSnapshot(callback);
 const onGetPedido = (callback) => db.collection('Confirmar_Pedido').onSnapshot(callback);
@@ -49,7 +50,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     const datosPedido = doc.data();
                     datosPedido.id = doc.id;
                     const pedidoConfirmado = []
-                    idUsuario = datosPedido.idCliente;
+                    
                     console.log(datosPedido.idCliente)
                     //console.log(doc.id, "=>", doc.data());
                     datosPedido.infoPedido.forEach(datos => {
@@ -77,6 +78,17 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     console.log(pedidoConfirmado)
                     taskForm.addEventListener('submit', async (e) => {
 
+                        console.log(datosPedido.id, idUsuario, pedidoConfirmado, datosPedido.total_pagado);
+                        combo = document.getElementById("selectDir");
+                        console.log(combo.options);
+                        console.log(combo.options[combo.selectedIndex].lastChild.value);
+                        const idDireccion = combo.options[combo.selectedIndex].lastChild.value
+                        await addPedido(datosPedido.id, idUsuario, pedidoConfirmado,idDireccion, datosPedido.total_pagado);
+                        console.log("Enviado")
+                        function redireccionar() { location.href = "catalogo.html"; }
+                        setTimeout(redireccionar(), 25000);
+                    })
+                    btnEfectivo.addEventListener('click',async(e)=>{
                         console.log(datosPedido.id, idUsuario, pedidoConfirmado, datosPedido.total_pagado);
                         combo = document.getElementById("selectDir");
                         console.log(combo.options);

@@ -46,22 +46,21 @@
             <div class="container">
                 <div class="d-flex block-heading" style="width: 100vw;"><button id="back-btn"class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Regresar</button></div>
                 <div class="block-content">
-                    <div id="infop" class="product-info">
+                    <div class="product-info">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="gallery">
                                     <div id="product-preview" class="vanilla-zoom">
-                                        <div class="zoomed-image">                                      
-                                        </div>
-                                        <div class="sidebar">
-                                            <img class="img-fluid d-block small-preview" src="assets/img/subirImagen.png">
-                                            <img class="img-fluid d-block small-preview" src="assets/img/subirImagen.png">
+                                        <div class="zoomed-image"></div>
+                                        <div id="infop" class="sidebar">
+                                            <img class="img-fluid d-block small-preview" src="https://images-na.ssl-images-amazon.com/images/I/81hQGc0vICL.jpg">
+                                            <img class="img-fluid d-block small-preview" src="https://images-na.ssl-images-amazon.com/images/I/81RsveXuLYL.jpg">
                                             <img class="img-fluid d-block small-preview" src="assets/img/subirImagen.png">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div id="impProductos" class="col-md-6">
                                 <div class="info">
                                     <h3>Nombre de producto</h3>
                                     <div class="price">
@@ -203,6 +202,7 @@
         var defaultStorage = firebase.storage();
 
     </script>
+    
     <script src="./js/producto.js"></script>
     <script src="./js/nabvar.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
