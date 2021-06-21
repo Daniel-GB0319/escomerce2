@@ -84,9 +84,11 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                         console.log(combo.options[combo.selectedIndex].lastChild.value);
                         const idDireccion = combo.options[combo.selectedIndex].lastChild.value
                         await addPedido(datosPedido.id, idUsuario, pedidoConfirmado,idDireccion, datosPedido.total_pagado);
+                         procesandoPago()
+                        
                         console.log("Enviado")
                         function redireccionar() { location.href = "catalogo.html"; }
-                        setTimeout(redireccionar(), 25000);
+                        //setTimeout(redireccionar(), 25000);
                     })
                     btnEfectivo.addEventListener('click',async(e)=>{
                         console.log(datosPedido.id, idUsuario, pedidoConfirmado, datosPedido.total_pagado);
@@ -95,9 +97,11 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                         console.log(combo.options[combo.selectedIndex].lastChild.value);
                         const idDireccion = combo.options[combo.selectedIndex].lastChild.value
                         await addPedido(datosPedido.id, idUsuario, pedidoConfirmado,idDireccion, datosPedido.total_pagado);
+                         procesandoPago()
+                        
                         console.log("Enviado")
                         function redireccionar() { location.href = "catalogo.html"; }
-                        setTimeout(redireccionar(), 25000);
+                        //setTimeout(redireccionar(), 25000);
                     })
 
                 })

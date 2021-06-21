@@ -127,6 +127,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                                     })
                                     console.log('1 cantidad a base de datos: ' + consultCarrito.infoProducto.cant_prod_car)
                                     addCarrito(idCarritoComprar, idCliente, consultCarrito.infoProducto)
+                                    agregadoAlCarrito() 
                                     console.log('funcion 1 enviado')
 
                                 } else {
@@ -153,6 +154,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                                     consultCarrito.infoProducto.splice(indexModificar, 1, datosProducto);
                                     console.log('2 cantidad a base de datos: ' + datosProducto.cant_prod_car)
                                     addCarrito(idCarritoComprar, idCliente, consultCarrito.infoProducto)
+                                    agregadoAlCarrito() 
                                     console.log('funcion 2 enviado')
                                 }
                             })
@@ -182,6 +184,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                         const datosCarrito = datosProducto
                         console.log(datosCarrito)
                         await addCarrito(idCarritoComprar, idCliente, datosProducto);
+                        agregadoAlCarrito() 
                         console.log('funcion 3 enviado')
                     }
 

@@ -113,6 +113,7 @@ function imprimirProductos(doc) {
                                 cant_prod_car: cant_prod_car
                             })
                             addCarrito(idCarritoComprar, idCliente, consultCarrito.infoProducto)
+                            agregadoAlCarrito()
 
                         } else {
                             //Si existe el producto actualiza la cantidad
@@ -137,6 +138,7 @@ function imprimirProductos(doc) {
                             console.log(datosProducto)
                             consultCarrito.infoProducto.splice(indexModificar, 1, datosProducto);
                             addCarrito(idCarritoComprar, idCliente, consultCarrito.infoProducto)
+                            agregadoAlCarrito()
                         }
                     })
                 })
@@ -164,6 +166,7 @@ function imprimirProductos(doc) {
                 const datosCarrito = datosProducto
 
                 await addCarrito(idCarritoComprar, idCliente, datosCarrito);
+                agregadoAlCarrito()
 
             }
 
