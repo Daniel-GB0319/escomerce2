@@ -14,8 +14,8 @@ function mensajeDeExito(mensaje, redireccion) {
         icon: 'success',
         title: mensaje,
         showConfirmButton: false,
-        timer: 4000
-    }).then(async (e) => {
+        timer: 2500
+    }).then(async function () {
         window.location = redireccion;
     })
 }

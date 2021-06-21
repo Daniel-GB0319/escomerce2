@@ -41,7 +41,10 @@
                                         style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: rgb(13,136,208);"><i
                                             class="fa fa-search" style="width: 80%;"></i></button></div>
                             </div>
-                            <div class="d-flex flex-row-reverse justify-content-around"><a href="./perfilUsuario.html"><i class="la la-user"></i></a><a id="login_header" href="login.html" style="font-family: Montserrat, sans-serif;">iniciar sesión/registrarse</a></div>
+                            <div class="d-flex flex-row-reverse justify-content-around"><a
+                                    href="./perfilUsuario.html"><i class="la la-user"></i></a><a id="login_header"
+                                    href="login.html" style="font-family: Montserrat, sans-serif;">iniciar
+                                    sesión/registrarse</a></div>
                         </div>
                     </li>
                 </ul>
@@ -84,28 +87,24 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Agregar dirección</h4><button type="button"
-                                                    class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                <h4 class="modal-title">Agregar dirección</h4>
+                                                <button type="button" id="btnClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="d-flex flex-column justify-content-evenly"
-                                                    style="height: 40vh;"><input class="form-control" type="text"
-                                                        placeholder="Calle"><input class="form-control" type="text"
-                                                        placeholder="No. Interior"><input class="form-control"
-                                                        type="text" placeholder="No. Exterior (opcional)">
-                                                    <input class="form-control" type="text" placeholder="Colonia"><input
-                                                        class="form-control" type="text"
-                                                        placeholder="Alcaldia-Municipio"><input class="form-control"
-                                                        type="text" placeholder="C.P.">
+                                                <div class="d-flex flex-column justify-content-evenly" style="height: 40vh;">
+                                                    <input title="&quot;Calle&quot;" id="calle" class="form-control" type="text" placeholder="Calle">
+                                                    <input title="&quot;No. Exterior&quot;" id="noExt" class="form-control" type="text" placeholder="No. Exterior">
+                                                    <input title="&quot;No. Interior&quot;" id="noInt" class="form-control" type="text" placeholder="No. Interior (opcional)">
+                                                    <input title="&quot;Colonia&quot;" id="colonia" class="form-control" type="text" placeholder="Colonia">
+                                                    <input title="&quot;Alcaldia-Municipio&quot;" id="alcaldia" class="form-control" type="text" placeholder="Alcaldia-Municipio">
+                                                    <input title="&quot;Codigo Postal&quot;" id="cp" class="form-control" type="text" placeholder="C.P.">
                                                 </div>
-                                                <textarea class="form-control"
-                                                    placeholder="Referencias (No. telefónico, color de la puerta, etc.)"></textarea>
+                                                <textarea title="&quot;Referencias&quot;" id="referencias" class="form-control" placeholder="Referencias (No. telefónico, color de la puerta, etc.)"></textarea>
                                             </div>
-                                            <div class="modal-footer"><button class="btn btn-primary"
-                                                    type="submit">Guardar</button><button class="btn btn-light"
-                                                    type="button" data-bs-dismiss="modal"
-                                                    data-bs-target="#modalDieccion">Cerrar</button></div>
+                                            <div class="modal-footer">
+                                                <button id="btnGuardarDir" class="btn btn-primary" type="submit">Guardar</button>
+                                                <button id="btnCerrar" class="btn btn-light" type="button" data-bs-dismiss="modal" data-bs-target="#modalDieccion">Cerrar</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -124,12 +123,10 @@
                                         <option value="13">2:00 p.m - 3:00 p.m</option>
                                     </select></div>
                                 <div class="d-flex flex-column justify-content-start align-self-center"
-                                    id="divDireccion1" style="width: 80%;margin-bottom: 40px; display: none;">
-                                    <span>Dirección:</span><select class="form-select" style="margin-bottom: 40px;">
-                                        <option value="undefined" selected="">Selecciona tu dirección de entrega
-                                        </option>
-                                        <option value="12">Dirección 1</option>
-                                        <option value="13">Dirección 2</option>
+                                    id="divDireccion" style="width: 80%;margin-bottom: 40px; display: none;">
+                                    <span>Dirección:</span><select class="form-select" id="selectDir"
+                                        style="margin-bottom: 40px;">
+                                        <option value="undefined" selected="">Selecciona tu dirección de entrega</option>
                                     </select><button class="btn btn-primary d-flex align-self-center"
                                         id="btnAgregarDireccionCompra" type="button" data-bs-toggle="modal"
                                         data-bs-target="#modalDireccion">Agregar nueva dirección</button>
@@ -140,9 +137,10 @@
                             <h3 class="title">Seleccionar método de pago</h3>
                             <div class="d-flex justify-content-around align-self-center"
                                 style="width: 80%;margin-bottom: 40px;"><button
-                                    class="btn btn-primary d-flex align-self-center" type="button" id="payCard" onclick="showMetodoCard()"
-                                    style="background: rgb(13,136,208);">Tarjeta de crédito/débito</button><button
-                                    class="btn btn-primary d-flex align-self-center" type="button" id="payCash" onclick="showMetodoCash()"
+                                    class="btn btn-primary d-flex align-self-center" type="button" id="payCard"
+                                    onclick="showMetodoCard()" style="background: rgb(13,136,208);">Tarjeta de
+                                    crédito/débito</button><button class="btn btn-primary d-flex align-self-center"
+                                    type="button" id="payCash" onclick="showMetodoCash()"
                                     style="background: rgb(13,136,208);">Efectivo</button></div>
                         </div>
                         <div class=" flex-column card-details" id="divPagoCash" style="display:none;">
@@ -201,7 +199,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
-  https://firebase.google.com/docs/web/setup#available-libraries -->
+     https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
@@ -214,7 +212,7 @@
             authDomain: "escommerce-6dadb.firebaseapp.com",
             databaseURL: "https://escommerce-6dadb-default-rtdb.firebaseio.com",
             projectId: "escommerce-6dadb",
-            storageBucket: "escommerce-6dadb.appspot.com",
+            storageBucket: "gs://escommerce-6dadb.appspot.com",
             messagingSenderId: "963353940793",
             appId: "1:963353940793:web:168c75d0b777d32a230ee8",
             measurementId: "G-G7D0QTM0PQ"
@@ -222,12 +220,13 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
-
+        
         var defaultStorage = firebase.storage();
 
     </script>
     <script src="./js/pedidos.js"></script>
     <script src="./js/realizarPedido.js"></script>
+    <script src="./assets/js/sweetalert.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
@@ -235,6 +234,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
     <script src="./assets/js/main.js"></script>
     <script src="assets/js/Simple-Slider.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
 </body>
 
 </html>
