@@ -188,10 +188,14 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             btnDesc.forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                 const idProductoG = await getProducto(e.target.dataset.id);
+                const idp = e.target.dataset.id
                 const datoVer = idProductoG.data();
                 var nombrep = datoVer.nombre_prod
-                //console.log(nombrep)
+                var catp = datoVer.cat_prod
+                console.log(idp)
                 localStorage.setItem("nombre_variable",nombrep);
+                localStorage.setItem("cat_variable",catp);
+                localStorage.setItem("id_variable",idp);
                 function redireccionar() { location.href = "descripcionProducto.html"; }
                 setTimeout(redireccionar(), 25000);
                 })
@@ -228,7 +232,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         querySnapshot.forEach(doc => {
             cantidadCarrito = doc.data()
             
-            console.log(cantidadCarrito.infoProducto.length)
+            //console.log(cantidadCarrito.infoProducto.length)
             numCarrito.innerHTML = `
             <ul class="navbar-nav d-flex align-items-center align-content-center ms-auto">
                     <li class="nav-item"></li>
