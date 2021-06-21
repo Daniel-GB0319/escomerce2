@@ -229,9 +229,10 @@ addEventListener('DOMContentLoaded', async (e) => {
     .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             dirRef = doc.data();
+            dirId = doc.id;
             var select = document.getElementById("selectDir")
             var option = document.createElement("option");
-            option.innerHTML = dirRef.calle + " #" + dirRef.noExt;
+            option.innerHTML = '<option id="'+dirId+'" value="'+dirId +'" selected="">' + dirRef.calle + " #" + dirRef.noExt + '</option>';
             select.appendChild(option);
         })
     }).catch((error) => {
