@@ -1,53 +1,95 @@
-var db = firebase.firestore();
+const db = firebase.firestore();
 
-/*db.collection("pedido").get().set({
-    cantidad,
-    condicion,
-    fecha_compra,
-    fecha_entrega,
-    id_cliente,
-    id_producto,
-    imagen,
-    nombre,
-    numero_tarjeta,
-    precio_unitario,
-    total_pagar
+const imprPedido = document.getElementById('imp-pedido');
+const totalPedido = document.getElementById('divTotal');
+const taskForm = document.getElementById('form_metodoPago');
+
+let carritoOn = false;
+let idCarritoBuscar = ''
+let productosConfirmados = [];
+let idUsuario = ''
+//Funcion para imprimir la informacion
+const onGetCarrito = (callback) => db.collection('carrito').onSnapshot(callback);
+const onGetPedido = (callback) => db.collection('Confirmar_Pedido').onSnapshot(callback);
+db.collection('Confirmar_Pedido');
+
+const addPedido = (idPedido, idUsuario, DatosPedido, pagoTotal) => db.collection('pedido').doc().set({
+    idPedido,
+    idUsuario,
+    DatosPedido,
+    pagoTotal
 })
 
-.then(function(docRef){
-   console.log("Document written with ID: ", docRef.id);
-})
-.catch(function (error) {
-    console.error("Error adding document: ", error);
-})*/
-//Leer documentos
 
-var tabla = document.getElementById('compras');
-db.collection("pedido").get().then((querySnapshot) => {
-    tabla.innerHTML = '';
-    querySnapshot.forEach((doc) => {
-       tabla.innerHTML += `
-                                    <div class="items">
-                                        <div class="product">
-                                            <div class="row justify-content-center align-items-center">
-                                                <div class="col-md-3">
-                                                    <div class="product-image"><img class="img-fluid d-block mx-auto image" src=${doc.data().imagen}></div>
-                                                </div>
-                                                <div class="col-md-5 product-info">
-                                                    <div><span>ID de compra:&nbsp;${doc.id}</span><br><span>Fecha de compra:&nbsp;${doc.data().fecha_compra}</span><br><span class="value">Fecha de llegada:&nbsp;${doc.data().fecha_entrega}</span></div><br><a class="product-name" href="#" style="color: rgb(13,136,208);">${doc.data().nombre}</a>
-                                                    <div class="product-specs">
-                                                    <div><span>Detalles:&nbsp;</span><span class="value"></span></div><a href="#" class="product-name">Direccion de Envio</a><br><a href="#" class="product-name">Metodo de Pago</a>
-                                                        <div><span>Vendedor:&nbsp;</span><a class="product-name" href="#">david</a></span></div>
-                                                        <div><span>Estado de la entrega:&nbsp;</span><span class="value">Entregada</span></div>
-                                                        <div><span>Precio por unidad:&nbsp;$</span><span class="value">${doc.data().precio_unitario}</span></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Total de la compra</label><span>$${doc.data().total_pagar}</span></div>
-                                                <div class="col"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);">Volver a comprar</button></div>
-                                            </div>                   
-          `
-    });
-});
+//Imprimir
+
+
+window.addEventListener('DOMContentLoaded', async (e) => {
+    onGetCarrito(querySnapshot => {
+
+        querySnapshot.forEach(doc => {
+            const consultaCarrito_Pedido = doc.data();
+            consultaCarrito_Pedido.id = doc.id;
+            //console.log("ID Carrito:"+consultaCarrito_Pedido.id)
+            //console.log("ID Pedido:"+consultaCarrito_Pedido.idPedido)
+            console.log("ID: "+consultaCarrito_Pedido.id)
+            idCarritoBuscar = consultaCarrito_Pedido.id;
+            
+        });
+        
+        db.collection('Carrito_pedido').where('idCarrito', '==', idCarritoBuscar)
+            .get().then((querySnapshot) => {
+                
+                imprPedido.innerHTML = ''
+                totalPedido.innerHTML = '';
+
+                querySnapshot.forEach((doc) => {
+                    
+                    const datosPedido = doc.data();
+                    datosPedido.id = doc.id;
+                    const pedidoConfirmado = []
+                    idUsuario = datosPedido.idCliente;
+                        console.log(datosPedido.idCliente)
+                    //console.log(doc.id, "=>", doc.data());
+                    datosPedido.infoPedido.forEach(datos => {
+                        
+                        imprPedido.innerHTML += `
+                            <div class="item"><span class="price">$ ${datos.costo_producto}</span>
+                                <p class="item-name">${datos.nombre_prod}</p>
+                                <p class="item-description">Descripcion producto: ${datos.descripcion_prod}</p>
+                            </div>`;
+
+                        
+                        pedidoConfirmado.push(
+                            {
+                                id_producto: datos.id_producto,
+                                nombre_prod: datos.nombre_prod,
+                                descripcion_prod: datos.descripcion_prod,
+                                imagen_producto: datos.imagen_producto,
+                                cantidad_prod: datos.cantidad_prod,
+                                costo_producto: datos.costo_producto,
+                            });
+                            
+                    })
+                    totalPedido.innerHTML += `<span>Total</span><span class="price">$ ${datosPedido.total_pagado}</span>`;
+
+                    console.log(pedidoConfirmado)
+                    taskForm.addEventListener('submit', async (e) => {
+                        
+                        console.log(datosPedido.id,idUsuario, pedidoConfirmado, datosPedido.total_pagado);
+                        
+                        await addPedido(datosPedido.id,idUsuario, pedidoConfirmado, datosPedido.total_pagado);
+                        console.log("Enviado")
+                        function redireccionar() { location.href = "catalogo.html"; }
+                        setTimeout(redireccionar(), 25000);
+                    })
+
+                })
+
+            }).catch((error) => {
+                console.log("Error getting documents:", error)
+            })
+        //console.log("Tengo el ID: " + idCarritoBuscar)
+    })
+})
+

@@ -95,9 +95,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     //SI EXISTE EL CARRITO
                     db.collection('carrito').where("idCliente","==", idCliente).get()
                     .then((querySnapshot) => {
-                        
                         querySnapshot.forEach((doc) => {
-                            existeCarrito = true;
                             consultCarrito = doc.data();
                             console.log(consultCarrito.infoProducto)
                             const encontrarDato = consultCarrito.infoProducto.find(item => {
@@ -160,25 +158,21 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                     
                      
                     //db.collection('carrito').where("idCliente","",)
-                    if (existeCarrito == false) {
-                        datosProducto.push({
-                            nombre_prod : datoActualizar.nombre_prod,
-                            desc_prod : datoActualizar.desc_prod,
-                            cant_prod : datoActualizar.cant_prod,
-                            prec_prod : datoActualizar.prec_prod,
-                            cond_prod : datoActualizar.cond_prod,
-                            url_prod : datoActualizar.url_prod,
-                            calif_prod : datoActualizar.calif_prod,
-                            cat_prod : datoActualizar.cat_prod,
-                            id_prod : idProducto,
-                            cant_prod_car: cant_prod_car
-                        })
-                        const datosCarrito = datosProducto
-                        
-                        await addCarrito(idCarritoComprar,idCliente,datosCarrito);
-                        
-                    }
+                    datosProducto.push({
+                        nombre_prod : datoActualizar.nombre_prod,
+                        desc_prod : datoActualizar.desc_prod,
+                        cant_prod : datoActualizar.cant_prod,
+                        prec_prod : datoActualizar.prec_prod,
+                        cond_prod : datoActualizar.cond_prod,
+                        url_prod : datoActualizar.url_prod,
+                        calif_prod : datoActualizar.calif_prod,
+                        cat_prod : datoActualizar.cat_prod,
+                        id_prod : idProducto,
+                        cant_prod_car: cant_prod_car
+                    })
+                    const datosCarrito = datosProducto
                     
+                    await addCarrito(idCarritoComprar,idCliente,datosCarrito);
                 })
             })
 
@@ -186,18 +180,26 @@ window.addEventListener('DOMContentLoaded', async (e) => {
 
             //Vamos  la vista Descripcion del producto
             btnDesc.forEach(btn => {
+
                 btn.addEventListener('click', async (e) => {
-                const idProductoG = await getProducto(e.target.dataset.id);
-                const idp = e.target.dataset.id
-                const datoVer = idProductoG.data();
-                var nombrep = datoVer.nombre_prod
-                var catp = datoVer.cat_prod
-                console.log(idp)
-                localStorage.setItem("nombre_variable",nombrep);
-                localStorage.setItem("cat_variable",catp);
-                localStorage.setItem("id_variable",idp);
-                function redireccionar() { location.href = "descripcionProducto.html"; }
-                setTimeout(redireccionar(), 25000);
+
+                    const doc = await getProducto(e.target.dataset.id);
+                    const datoVer = doc.data();
+                    //console.log(e.target.dataset.id)
+                    const idProducto = e.target.dataset.id
+                    const precioProducto = datoVer.prec_prod
+                    const datosProducto = [{
+                        nom_prod: datoVer.nombre_prod,
+                        desc_prod: datoVer.desc_prod,
+                        cantidad_prod: datoVer.cant_prod,
+                        estado_prod: datoVer.cond_prod,
+                        foto_prod: datoVer.url_prod,
+                        rate_prod: datoVer.calif_prod,
+                        categoria_prod: datoVer.cat_prod,
+                    }];
+                    await addVerProducto(idProducto, datosProducto, precioProducto);
+                    function redireccionar() { location.href = "descripcionProducto.html"; }
+                    setTimeout(redireccionar(), 25000);
                 })
             })
 
@@ -232,7 +234,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
         querySnapshot.forEach(doc => {
             cantidadCarrito = doc.data()
             
-            //console.log(cantidadCarrito.infoProducto.length)
+            console.log(cantidadCarrito.infoProducto.length)
             numCarrito.innerHTML = `
             <ul class="navbar-nav d-flex align-items-center align-content-center ms-auto">
                     <li class="nav-item"></li>
