@@ -177,10 +177,14 @@ function imprimirProductos(doc) {
     btnDesc.forEach(btn => {
         btn.addEventListener('click', async (e) => {
             const idProductoG = await getProducto(e.target.dataset.id);
+            const idp = e.target.dataset.id
             const datoVer = idProductoG.data();
             var nombrep = datoVer.nombre_prod
-            //console.log(nombrep)
+            var catp = datoVer.cat_prod
+            console.log(idp)
             localStorage.setItem("nombre_variable", nombrep);
+            localStorage.setItem("cat_variable", catp);
+            localStorage.setItem("id_variable", idp);
             function redireccionar() { location.href = "descripcionProducto.html"; }
             setTimeout(redireccionar(), 25000);
         })
@@ -268,11 +272,11 @@ window.addEventListener('DOMContentLoaded', async (e) => {
             }
         })
         arrayList.forEach((filtrado) => {
-            
+
             onGetIntegrantes((querySnapshot) => {
                 console.log("ID FILTRO: " + filtrado)
                 //Borra el contenido anterior dentro del div
-                
+
                 //Imprimimos los datos guardados en FireBase en la consola
                 querySnapshot.forEach(doc => {
                     if (doc.data().cat_prod == filtrado) {
