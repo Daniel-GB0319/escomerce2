@@ -2,6 +2,8 @@ const db = firebase.firestore();
 const impEstado = document.getElementById("changeStatus");
 const imprPedido = document.getElementById("precioProductoStatus")
 
+
+
 const impIdPedido = sessionStorage.getItem('idProdPedido');
 let idCliente = sessionStorage.getItem('idCliente');
 
@@ -64,7 +66,9 @@ window.addEventListener('DOMContentLoaded',async (e) => {
                     const totalPedido = document.getElementById('impTotal')
                     totalPedido.innerHTML=""
                     totalPedido.innerHTML += `<span>Total</span><span class="price">$ ${datosPedido.pagoTotal}</span>`;                  
-
+                    const ticketEstado = document.getElementById("impEstadoTicket")
+                    ticketEstado.innerHTML=""
+                    ticketEstado.innerHTML=`<span>Estado actual del pedido</span><span class="price">${datosPedido.estatus_pedido}</span>`
                 })
 
             

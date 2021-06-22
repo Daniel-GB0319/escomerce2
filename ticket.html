@@ -35,23 +35,23 @@
                 </div>
                 <form>
                     <div class="products">
-                        <h3 class="title">Resumen del pedido</h3>
-                        <div class="item">
+                        <h3 class="title">Ticket</h3>
+                        <div id="precioProductoStatus" class="item">
                             <span class="price">$320</span>
                             <p class="item-name" id="nombreProductoTicket"><span id="cantidadProductoTicket">N </span>Nombre producto&nbsp;</p>
                             <p class="item-description"><span>Vendido por:</span> Proveedor</p>
                         </div>
-                        <div class="total"><span>Total</span><span class="price">$320</span></div>
-                        <div class="flex-column">
+                        <div id="impTotal" class="total"><span>Total</span><span class="price">$320</span></div>
+                        <div id="impDireccion"class="flex-column">
                             <p class="item-name" style="margin-top: 25px;"><span class="price">Direccion o UA</span>Dirección o UA</p>
                         </div>
-                        <div class="total"><span>Estado actual del pedido</span><span class="price">Estado</span></div>
+                        <div id="impEstadoTicket"class="total"><span>Estado actual del pedido</span><span class="price">En proceso</span></div>
                         <br><br>
                         <h3 class="title">Información del método de pago</h3>
                         <div class="item">
                             <span class="title">Método de pago</span>
                             <br><br>
-                            <p id="nombreMetodoPagoTicket"><span id="metodoPagoTicket">Tipo de pago:</span> Efectivo o tarjeta&nbsp;</p>
+                            <p id="nombreMetodoPagoTicket"><span id="metodoPagoTicket">Tipo de pago:</span> Tarjeta&nbsp;</p>
                         </div>
                     </div>
 
@@ -64,6 +64,36 @@
             <p>© Equipo 3 | Análisis y diseño orientado a objetos | 2CV16 | IPN-ESCOM</p>
         </div>
     </footer>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyC5pkmnPgxN2fF58oCj47RMMQBBoqJXTyc",
+            authDomain: "escommerce-6dadb.firebaseapp.com",
+            databaseURL: "https://escommerce-6dadb-default-rtdb.firebaseio.com",
+            projectId: "escommerce-6dadb",
+            storageBucket: "escommerce-6dadb.appspot.com",
+            messagingSenderId: "963353940793",
+            appId: "1:963353940793:web:168c75d0b777d32a230ee8",
+            measurementId: "G-G7D0QTM0PQ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        
+        var defaultStorage = firebase.storage();
+
+    </script>
+        <script src="./js/envio.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
