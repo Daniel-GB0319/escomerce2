@@ -58,7 +58,7 @@ db.collection("pedido").where("idUsuario", "==",sessionStorage.getItem('idClient
                             </span>
                         </div>
                         <br>
-                        <a class="product-name" href="carrito.html" style="color: rgb(13,136,208);">
+                        <a class="product-name" href="ticket.html" style="color: rgb(13,136,208);">
                             Detalles del Pedido
                         </a>
                     </div>
