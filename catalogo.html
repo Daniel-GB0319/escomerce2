@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Catalogo</title>
+    <link rel="icon" href="assets/img/LOGO.png">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
@@ -26,7 +27,7 @@
                 <ul class="navbar-nav d-flex align-items-center align-content-center ms-auto">
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link active" href="catalogo.html">catalogo</a></li>
-                    <li class="nav-item d-flex flex-row-reverse"><button class="btn btn-primary" type="button" style="background: rgb(13,136,208);border-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-top-left-radius: 10px;font-family: Montserrat, sans-serif;"
+                    <li class="nav-item d-flex flex-row-reverse"><button id="cantCarrito"class="btn btn-primary" type="button" style="background: rgb(13,136,208);border-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-top-left-radius: 10px;font-family: Montserrat, sans-serif;"
                             onclick="verCarrito()"><span>0</span><i class="fa fa-shopping-cart" style="margin-left: 10px;"></i></button></li>
                     <li class="nav-item d-flex flex-row-reverse">
                         <div class="d-flex flex-column-reverse">
@@ -55,22 +56,12 @@
                             <div class="d-none d-md-block">
                                 <div class="filters">
                                     <div class="filter-item">
-                                        <h3>Categories</h3>
+                                        <h3>Categorias</h3>
                                         <div class="form-check"><input class="form-check-input" type="checkbox" id="todoCatalogo" category="todoCatalogo" value="impTodo" ><label class="form-check-label" for="todoCatalogo">TODO</label></div>
                                         <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" category="oq57nLtf81ZVZpXBnHEj" value="oq57nLtf81ZVZpXBnHEj"><label class="form-check-label" for="formCheck-1">Libros</label></div>
                                         <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" category="aWDBUjyB7Dv4oHGRJluP" value="aWDBUjyB7Dv4oHGRJluP"><label class="form-check-label" for="formCheck-2">Mat. electrónica</label></div>
                                         <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" category="waXbjSVldmndUG4o27cj" value="waXbjSVldmndUG4o27cj"><label class="form-check-label" for="formCheck-3">Mat. laboratorio</label></div>
                                         <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" category="J4aTepY3APMGYJOrauF6" value="J4aTepY3APMGYJOrauF6"><label class="form-check-label" for="formCheck-4">Miscelanea</label></div>
-                                    </div>
-                                    <div class="filter-item">
-                                        <h3>Condición</h3>
-                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-5"><label class="form-check-label" for="formCheck-5">Nuevo</label></div>
-                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6"><label class="form-check-label" for="formCheck-6">Usado</label></div>
-                                    </div>
-                                    <div class="filter-item">
-                                        <h3>Precio</h3>
-                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8"><label class="form-check-label" for="formCheck-8">Precio minimo</label></div>
-                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-9"><label class="form-check-label" for="formCheck-9">Precio maximo</label></div>
                                     </div>
                                 </div>
                             </div><button id="btn-aplicar"class="btn btn-primary" type="button">Aplicar</button>
@@ -83,16 +74,6 @@
                                             <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" value="aWDBUjyB7Dv4oHGRJluP"><label class="form-check-label" for="formCheck-2">Mat. electrónica</label></div>
                                             <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" value="waXbjSVldmndUG4o27cj"><label class="form-check-label" for="formCheck-3">Mat. laboratorio</label></div>
                                             <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" value="J4aTepY3APMGYJOrauF6"><label class="form-check-label" for="formCheck-4">Miscelanea</label></div>
-                                        </div>
-                                        <div class="filter-item">
-                                            <h3>Condición</h3>
-                                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-5" value="nuevo"><label class="form-check-label" for="formCheck-5">Nuevo</label></div>
-                                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" value="usado"><label class="form-check-label" for="formCheck-6">Usado</label></div>
-                                        </div>
-                                        <div class="filter-item">
-                                            <h3>Precio</h3>
-                                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" value="preciominimo"><label class="form-check-label" for="formCheck-8">Precio minimo</label></div>
-                                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-9" value="preciomaximo"><label class="form-check-label" for="formCheck-9">Precio maximo</label></div>
                                         </div>
                                     </div>
                                 </div>
@@ -226,6 +207,15 @@
         <div class="footer-copyright ">
             <p>© Equipo 3 | Análisis y diseño orientado a objetos | 2CV16 | IPN-ESCOM<br><br></p>
         </div>
+        <style>
+            .review_titem_text{
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                overflow: hidden;
+            }
+        </style>
     </footer>
     <!--Aquí se agregarán los js-->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -257,7 +247,8 @@
         var defaultStorage = firebase.storage();
 
     </script>
-    
+    <script src="./assets/js/sweetalert.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
     <script src="./js/catalogo.js"></script>
     <script src="./js/nabvar.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"

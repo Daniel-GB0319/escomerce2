@@ -20,6 +20,16 @@ function mensajeDeExito(mensaje, redireccion) {
     })
 }
 
+function mensajeDeExitoS(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 2500
+    })
+}
+
 function agregadoAlCarrito() {
     Swal.fire({
         title: 'Agregado al carrito',
@@ -29,7 +39,7 @@ function agregadoAlCarrito() {
         backdrop: `
           rgba(255,255,255,0.9)
           url("./assets/img/carrito2.gif")
-         center -100px
+         center -150px
           no-repeat
         `,
         timer: 1000,
@@ -37,7 +47,7 @@ function agregadoAlCarrito() {
     })
 }
 
-function procesandoPago() {
+ function procesandoPago() {
     Swal.fire({
         title: 'Procesando pago...',
         width: 600,
@@ -51,10 +61,12 @@ function procesandoPago() {
     `,
         timer: 5000,
         showConfirmButton: false
+    }).then(()=>{
+        pagoExitoso();
     })
 }
 
-function pagoExitoso() {
+async function pagoExitoso() {
     Swal.fire({
         title: 'Compra finalizada',
         width: 600,
@@ -63,10 +75,12 @@ function pagoExitoso() {
         backdrop: `
           rgba(255,255,255,0.9)
           url("./assets/img/success.gif")
-         center 130px
+         center 50px
           no-repeat
         `,
         timer: 2000,
         showConfirmButton: false
+    }).then(async function () {
+        window.location = "./ticket.html";
     })
 }
