@@ -10,9 +10,10 @@ var prec_prod;
 var url_prod;
 var url_prod1;
 var url_prod2;
+var idClienteDatos;
 
 //Agregar Producto
-
+const getCliente = (id) => db.collection('clientes').doc(id).get();
 const saveProducto = (idCliente, calif_prod, cant_prod, cat_prod, cond_prod, desc_prod, nombre_prod, prec_prod, url_prod, url_prod1, url_prod2) =>
 
     db.collection('producto').doc().set({
@@ -74,6 +75,19 @@ addEventListener('DOMContentLoaded', async (e) => {
     }).catch((error) => {
         console.log("Error getting documents: ", error);
     })
+    const impDireccion =sessionStorage.getItem('idCliente');
+    //consulta el ID de la direccion
+    const docDir = await getCliente(impDireccion);
+    const idClienteDatos = docDir.data();
+    console.log(idClienteDatos.tipoCuenta)
+
+    if(idClienteDatos.tipoCuenta == false){
+    document.getElementById('catalogo-tab').style.display = 'none';
+    document.getElementById('ventas-tab').style.display = 'none';
+    }if(idClienteDatos.tipoCuenta == true){
+        document.getElementById('catalogo-tab').style.display = 'block';
+        document.getElementById('-tab').style.display = 'block';
+    }
 })
 
 document.getElementById('btnGuardarProd').addEventListener("click", async (e) => {
@@ -238,3 +252,10 @@ subirImagenes2 = async () => {
         });
     }
 };
+
+
+//RESTRINGIR PESTAÑAS
+
+window.addEventListener('DOMContentLoaded', async (e) => {
+
+})
