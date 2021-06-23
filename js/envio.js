@@ -34,10 +34,13 @@ window.addEventListener('DOMContentLoaded',async (e) => {
                 //totalPedido.innerHTML = '';
 
                 querySnapshot.forEach((doc) => {
+                    const impIDTicket = document.getElementById("impIDticket");
 
                     const datosPedido = doc.data();
                     datosPedido.id = doc.id;
-                    
+                    impIDTicket.innerHTML=`<h2 class="text-info">Resumen del pedido</h2>
+                    <p>A continuación podrás consultar el resumen de tu pedido.</p>
+                    <p>ID TICKET: ${datosPedido.id} </p>`
                     //Guardamos el id de direccion para hacer la consulta:
                     sessionStorage.setItem('idDireccionPedido',datosPedido.idDireccion);
                     sessionStorage.setItem('idPedido',datosPedido.id);
@@ -87,7 +90,7 @@ window.addEventListener('DOMContentLoaded',async (e) => {
             const direccion = docDir.data();
             
             const setDireccion = document.getElementById("impDireccion")
-
+            
             setDireccion.innerHTML=""
             setDireccion.innerHTML=`<p class="item-name" style="margin-top: 25px;"><span class="price">${direccion.calle}, # ${direccion.noExt}, ${direccion.colonia} </span>Dirección o UA</p>`
 
