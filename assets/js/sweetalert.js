@@ -81,7 +81,7 @@ async function pagoExitoso() {
         timer: 2000,
         showConfirmButton: false
     }).then(async function () {
-        window.location = "./catalogo.html";
+        window.location = "./ticket.html";
     })
 }
 
