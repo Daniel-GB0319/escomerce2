@@ -38,9 +38,7 @@ window.addEventListener('DOMContentLoaded',async (e) => {
 
                     const datosPedido = doc.data();
                     datosPedido.id = doc.id;
-                    impIDTicket.innerHTML=`<h2 class="text-info">Resumen del pedido</h2>
-                    <p>A continuación podrás consultar el resumen de tu pedido.</p>
-                    <p>ID TICKET: ${datosPedido.id} </p>`
+                    impIDTicket.innerHTML=`<p>ID TICKET: ${datosPedido.id} </p>`
                     //Guardamos el id de direccion para hacer la consulta:
                     sessionStorage.setItem('idDireccionPedido',datosPedido.idDireccion);
                     sessionStorage.setItem('idPedido',datosPedido.id);
@@ -66,8 +64,12 @@ window.addEventListener('DOMContentLoaded',async (e) => {
                             });
 
                     })
-                    const totalPedido = document.getElementById('impTotal')
-                    totalPedido.innerHTML=""
+                    const totalPedido = document.getElementById('impTotal');
+                    
+                    
+                    //totalPedidoEstado.innerHTML=``;
+                    //totalPedidoEstado.innerHTML += `<span>Total</span><span class="price">$ ${datosPedido.pagoTotal}</span>`;     
+                    totalPedido.innerHTML= ``;
                     totalPedido.innerHTML += `<span>Total</span><span class="price">$ ${datosPedido.pagoTotal}</span>`;                  
                     const ticketEstado = document.getElementById("impEstadoTicket")
                     ticketEstado.innerHTML=""
